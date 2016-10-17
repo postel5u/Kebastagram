@@ -60,4 +60,3 @@ $ php -S localhost:8000 -t public
 ```
 
 ###That's it! Now go build something cool.
->>>>>>> fusion des readme
