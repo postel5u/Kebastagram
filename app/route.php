@@ -8,7 +8,7 @@ $app->get('/', 'App\Controllers\HomeController:dispatch')->setName('homepage');
 
 $app->get('/login', 'App\Controllers\UserController:login')->setName('login');
 
-$app->get('/signup', 'App\Controllers\UserController:signup')->setName('signup');
+$app->get('/signup', 'App\Controllers\UserController:signup')->setName('signup') ;
 
 $app->post('/signup', 'App\Controllers\UserController:addMember');
 

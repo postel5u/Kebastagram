@@ -72,7 +72,7 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
 
             <div class=\"row\">
 
-                    <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\" >Sign up !
+                    <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\"  value=\"subInscription\">Sign up !
                         <i class=\"material-icons right\">send</i>
                     </button>
             </div>
@@ -159,7 +159,7 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
 /* */
 /*             <div class="row">*/
 /* */
-/*                     <button class="btn waves-effect waves-light" type="submit" name="action" >Sign up !*/
+/*                     <button class="btn waves-effect waves-light" type="submit" name="action"  value="subInscription">Sign up !*/
 /*                         <i class="material-icons right">send</i>*/
 /*                     </button>*/
 /*             </div>*/
