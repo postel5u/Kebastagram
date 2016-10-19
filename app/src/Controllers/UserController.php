@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Psr\Log\LoggerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -127,5 +128,28 @@ final class UserController
         }
 
 
+    }
+
+    public function loginPage(Request $request, Response $response, $args) {
+        return $this->view->render($response, 'login.twig');
+    }
+
+    public function login(Request $request, Response $response, $args) {
+        if(isset($_POST['action']) && $_POST['action'] == 'login') {
+            if(isset($_POST["username"]) && isset($_POST["password"])) {
+                $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+                $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+                $m = User::where("username", $username)->orwhere("email", $password)->get()->first();
+                if(isset($m->id)) {
+                    if (password_verify($password.$m->salt, $m->password)) {
+                        $_SESSION["id"] = $m->id;
+                        return $response->withRedirect($this->router->pathFor('homepage'));
+                    }
+                }
+            }
+        }
+        else {
+            $this->view->render($response, 'login.twig', array('errors' => "error"));
+        }
     }
 }
