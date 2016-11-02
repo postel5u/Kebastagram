@@ -1,0 +1,28 @@
+{% include 'header.twig' %}
+
+{%  if errors != "" %}
+<div class="row red-text center">
+    <p>Mauvais mail/username ou mauvais mot de passe</p>
+</div>
+{% endif %}
+
+<div>
+    <form method="post" name="login" class="col s6 offset-l3">
+        <div class="row">
+            <div class="input-field col s4 offset-l4">
+                <input name="username" type="text" placeholder="email ou username">
+            </div>
+            <div class="input-field col s4 offset-l4">
+                <input name="password" type="password" placeholder="mot de passe">
+            </div>
+        </div>
+        <div class="row center">
+            <button class="btn waves-effect waves-light" type="submit" name="action"  value="login">Connexion !
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+</div>
+
+
+{% include 'footer.twig' %}
