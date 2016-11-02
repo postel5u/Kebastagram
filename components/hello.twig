@@ -1,4 +1,68 @@
 {% include "header.twig" %}
+<nav>
+	<div class="nav-wrapper blue">
+		<a href="#" class="brand-logo">KebabStagram</a>
+		<ul id="nav-mobile" class="right hide-on-med-and-down">
+			<li><a href="/signin">Connexion</a></li>
+			<li><a href="/signup">Inscription</a></li>
+			<li><a href="/about">À propos</a></li>
+		</ul>
+	</div>
+</nav>
+<div id="index-banner" class="parallax-container">
+	<div class="section no-pad-bot">
+		<div class="container ">
+			<br><br>
+			<h1 class="header center teal-text text-lighten-2">KebabStagram</h1>
+			<div class="row center">
+				<h5 class="header col s12 white-text light">Le premier réseau social dédié aux amateurs de Kébab</h5>
+			</div>
+			<div class="row center">
+				<a href="/signup" id="download-button" class="btn-large waves-effect waves-light blue lighten-1">S'inscire</a>
+			</div>
+			<br><br>
+
+		</div>
+	</div>
+	<div class="parallax"><img src="images/bg_home.bmp"></div>
+</div>
 
 
-{% include"footer.twig" %}
+<div class="container">
+	<div class="section">
+
+		<!--   Icon Section   -->
+		<div class="row">
+			<div class="col s12 m4">
+				<div class="icon-block">
+					<h2 class="center blue-text"><i class="material-icons">flash_on</i></h2>
+					<h5 class="center">Simple et efficace</h5>
+
+					<p class="light">Partager les photos de vos plus beau kébab facilement et depuis n'importe où grace à KebabStagram. Tablette, smartphone ou ordinateur, c'est à vous de choisir.</p>
+				</div>
+			</div>
+
+			<div class="col s12 m4">
+				<div class="icon-block">
+					<h2 class="center blue-text"><i class="material-icons">group</i></h2>
+					<h5 class="center">Partager et decouvrir</h5>
+
+					<p class="light">Montrez à vos amis votre amour pour le kébab et partagez leur votre passion. Parcourez KébabStagram à la recheche de nouveau kébab et découvrez comment le monde vit avec les kébabs.</p>
+				</div>
+			</div>
+
+			<div class="col s12 m4">
+				<div class="icon-block">
+					<h2 class="center blue-text"><i class="material-icons">settings</i></h2>
+					<h5 class="center">Personnaliser</h5>
+
+					<p class="light">Modifiez à tout moment votre profil, choisissez les photos public ou privé. Ajoutez des amis pour qu'ils vivent votre kébabmania avec vous.</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% include "footer.twig" %}
+
