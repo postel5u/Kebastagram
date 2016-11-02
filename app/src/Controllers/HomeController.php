@@ -32,14 +32,21 @@ final class HomeController
     public function search(Request $request, Response $response, $args){
         if (isset($_GET['recherche']) && $_GET['recherche'] != ""){
             $r = $_GET['recherche'];
-            if (starts_with("#",$r)){
-                $t = Picture::where('tag','LIKE',"%".$_GET['recherche']."%");
-            }elseif (starts_with("@",$r)){
-                $u = User::where('username','LIKE',$_GET['recherche']."%");
+            if (starts_with($r,"#")){
+                $r = substr($r, 1);
+                $p = Pictures::where('tag','LIKE',"%".$r."%")->get();
+                $this->view->render($response, 'search.twig',array('recherche'=>$r,'pics'=>$p));
+
+            }elseif (starts_with($r,"@")){
+                $r = substr($r, 1);
+                $u = User::where('username','LIKE',$r."%")->orWhere('firstname','LIKE',$r."%")->orWhere('lastname','LIKE',$r."%")->get();
+                $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u));
+
             }else{
+                $error ="Rechercher un utilisateur avec @ ou un tag avec #";
+                $this->view->render($response, 'search.twig',array('erreur'=>$error));
 
             }
-            $this->view->render($response, 'search.twig',array('recherche'=>$_GET['recherche']));
         }else{
             $this->view->render($response, 'hello.twig');
         }

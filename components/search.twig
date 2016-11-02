@@ -1,2 +1,17 @@
 {% include "header.twig" %}
-<p>Resultat pour {{ recherche }} : </p>
+{%  if erreur is defined %}
+    <p class="red-text">Rechercher seulement avec un "#" ou un "@"</p>
+{% else %}
+    <p>Resultat pour {{ recherche }} : </p>
+{%  endif  %}
+{% if users is defined %}
+
+ {% for u in users %}
+    <a>{{ u.username}}({{u.firstname}} {{ u.lastname }})</a>
+ {% endfor %}
+
+{% else %}
+    {% for p in pics %}
+        <p>pics</p>
+    {% endfor %}
+{% endif %}
