@@ -1,0 +1,68 @@
+{%  include 'header.twig' %}
+
+
+
+    <div class="container">
+        <form method="post" name="signup" class="col s12">
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <input name="firstname" type="text" placeholder="First Name">
+                </div>
+                <div class="input-field col s6">
+                    <input name="name" type="text" placeholder="Name">
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="username" type="text" placeholder="username">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="password" type="password" placeholder="password">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="email" type="email" placeholder="email@email.com">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="birthday" type="date" placeholder="MM/DD/YYYY">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="address" type="text" placeholder="18 rue fromage">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="city" type="text" placeholder="Paris">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="codepostal" type="text" placeholder="75000">
+                </div>
+            </div>
+
+            <div class="row">
+
+                    <button class="btn waves-effect waves-light" type="submit" name="action"  value="subInscription">Sign up !
+                        <i class="material-icons right">send</i>
+                    </button>
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+
+{%  include 'footer.twig' %}
