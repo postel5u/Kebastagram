@@ -6,7 +6,9 @@
 
 $app->get('/', 'App\Controllers\HomeController:dispatch')->setName('homepage');
 
-$app->get('/login', 'App\Controllers\UserController:login')->setName('login');
+$app->get('/login', 'App\Controllers\UserController:loginPage')->setName('login');
+
+$app->post('/login', 'App\Controllers\UserController:login');
 
 $app->get('/signup', 'App\Controllers\UserController:signup')->setName('signup') ;
 

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Psr\Log\LoggerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -95,7 +96,7 @@ final class UserController
             $city = filter_var($city, FILTER_SANITIZE_STRING );
             $username = filter_var($username, FILTER_SANITIZE_STRING );
             $salt = time();
-            $pass = password_hash ( $pass.$salt, PASSWORD_DEFAULT, array (
+            $pass = password_hash ( $pass, PASSWORD_DEFAULT, array (
                 'cost' => 12
             ) );
 
@@ -118,14 +119,46 @@ final class UserController
             $m->password = $pass;
             $m->username = $username;
             $m->salt= $salt;
-
             $m->save ();
+            /**
             $_SESSION['profile']= $m->prenom ." ".$m->nom;
             $_SESSION['email'] = $m->mail;
-            $_SESSION['idMembre']= $m->id;
+            $_SESSION['idMembre']= $m->id;*/
 
         }
 
 
+    }
+
+    public function loginPage(Request $request, Response $response, $args) {
+        return $this->view->render($response, 'login.twig');
+    }
+
+    public function login(Request $request, Response $response, $args) {
+        if(isset($_POST['action']) && $_POST['action'] == 'login') {
+            if(isset($_POST["username"]) && isset($_POST["password"])) {
+                $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+                $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+                $m = User::where("username", $username)->orwhere("email", $username)->get()->first();
+                if(isset($m->id)) {
+                    if (password_verify($password, $m->password)) {
+                        $_SESSION["id"] = $m->id;
+                        return $response->withRedirect($this->router->pathFor('homepage'));
+                    }
+                    else {
+                        $this->view->render($response, 'login.twig', array('errors' => "error"));
+                    }
+                }
+                else {
+                    $this->view->render($response, 'login.twig', array('errors' => "error"));
+                }
+            }
+            else {
+                $this->view->render($response, 'login.twig', array('errors' => "error"));
+            }
+        }
+        else {
+            $this->view->render($response, 'login.twig', array('errors' => "error"));
+        }
     }
 }
