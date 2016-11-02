@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -36,9 +37,6 @@ final class UserController
 
         return $this->view->render($response,'signup.twig', array(   ));
     }
-
-
-
     public function addMember(Request $request, Response $response, $args) {
         if (isset($_POST['action']) && ($_POST['action'] == 'subInscription')) {
             if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['birthday']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username']) && isset($_POST['address']) && isset($_POST['codepostal']) && isset($_POST['city']) )  {
@@ -94,9 +92,8 @@ final class UserController
             $codepostal = filter_var($codepostal, FILTER_SANITIZE_STRING );
             $city = filter_var($city, FILTER_SANITIZE_STRING );
             $username = filter_var($username, FILTER_SANITIZE_STRING );
-            $salt = time();
-            $pass = password_hash ( $pass.$salt, PASSWORD_DEFAULT, array (
-                'cost' => 12
+            $pass = password_hash ( $pass, PASSWORD_DEFAULT, array (
+                'cost' => 12,
             ) );
 
             $date = explode('/', $dateNaiss);
@@ -117,8 +114,6 @@ final class UserController
             $m->city = $city;
             $m->password = $pass;
             $m->username = $username;
-            $m->salt= $salt;
-
             $m->save ();
             $_SESSION['profile']= $m->prenom ." ".$m->nom;
             $_SESSION['email'] = $m->mail;
@@ -127,5 +122,122 @@ final class UserController
         }
 
 
+    }
+
+
+    public function profil(Request $request, Response $response, $args){
+        $m = \App\Models\User::find('5819b4755d580');
+        $val = ['username'=>$m->username,
+                    'lastname' => $m->lastname,
+                    'firstname'=> $m->firstname,
+                    'date_of_birth'=>$m->date_of_birth,
+                    'address'=>$m->address,
+                    'email'=>$m->email
+            ];
+
+        return $this->view->render($response,'profil.twig', $val);
+    }
+
+
+    public function editProfil(Request $request, Response $response, $args){
+        $m = \App\Models\User::find('5819b4755d580');
+        $val = ['username'=>$m->username,
+            'user'=>$m,
+            'lastname' => $m->lastname,
+            'firstname'=> $m->firstname,
+            'date_of_birth'=>$m->date_of_birth,
+            'address'=>$m->address,
+            'email'=>$m->email,
+            'password'=>$m->password,
+            "city"=>$m->city,
+            "postal_code"=>$m->postal_code,
+            'salt'=>$m->salt
+        ];
+        return $this->view->render($response,'editProfil.twig', $val);
+    }
+
+    public function acceptEdit(Request $request, Response $response, $args){
+        $m = \App\Models\User::find('5819b4755d580');
+        if(password_verify($_POST["password"], $m->password)){
+            $nom = $_POST["lastname"];
+            $prenom = $_POST["firstname"];
+            $email = $_POST["email"];
+            $adress = $_POST["adress"];
+            $username = $_POST["username"];
+            $pass = $_POST["password"];
+            $city = $_POST["city"];
+            $dateNaiss = $_POST["date_of_birth"];
+            $postal_code = $_POST["postal_code"];
+            if ($nom != filter_var ( $nom, FILTER_SANITIZE_STRING )) {
+                array_push ( $errors, "Nom invalide, merci de corriger" );
+            }
+            if ($prenom != filter_var ( $prenom, FILTER_SANITIZE_STRING )) {
+                array_push ( $errors, "Prenom invalide, merci de corriger" );
+            }
+            if ($email != filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
+                array_push ( $errors, "Adresse email invalide, merci de corriger" );
+            } else {
+                $emailVerif = \App\Models\User::where ( 'email', $email )->get ();
+                if (sizeof ( $emailVerif ) != 0) {
+                    array_push ( $errors, "Un compte a déjà été créé avec cette adresse email" );
+                }
+            }
+            if ($adress != filter_var ( $adress, FILTER_SANITIZE_STRING )) {
+                array_push ( $errors, "Adresse invalide, merci de corriger" );
+            }
+
+            if ($city != filter_var ( $city, FILTER_SANITIZE_STRING )) {
+                array_push ( $errors, "Ville invalide, merci de corriger" );
+            }
+
+            if ($postal_code != filter_var ( $postal_code, FILTER_SANITIZE_STRING )) {
+                array_push ( $errors, "Code postal invalide, merci de corriger" );
+            }
+
+            if ($username != filter_var($username, FILTER_SANITIZE_STRING)){
+                array_push ( $errors, "Username invalide, merci de corriger" );
+            }
+            if ($pass != filter_var ( $pass, FILTER_SANITIZE_STRING )) {
+                array_push ( $errors, "Mot de passe invalide, merci de corriger" );
+            }
+            $pass = password_hash ( $pass, PASSWORD_DEFAULT, array (
+                'cost' => 12,
+            ) );
+
+            $date = explode('/', $dateNaiss);
+            $dateFin = '';
+            $i = sizeof($date);
+            for($i; $i>0; $i--){
+                $dateFin .= "-" . $date[$i-1];
+            }
+            $dateFin = substr($dateFin, 1);
+
+            $m->lastname = $nom;
+            $m->firstname = $prenom;
+            $m->date_of_birth = $dateFin;
+            $m->email = $email;
+            $m->address = $adress;
+            $m->postal_code = $postal_code;
+            $m->city = $city;
+            $m->password = $pass;
+            $m->username = $username;
+            $m->save ();
+            $val = ['username'=>$m->username,
+                'user'=>$m,
+                'lastname' => $m->lastname,
+                'firstname'=> $m->firstname,
+                'date_of_birth'=>$m->date_of_birth,
+                'address'=>$m->address,
+                'email'=>$m->email,
+                'password'=>$m->password,
+                "city"=>$m->city,
+                "postal_code"=>$m->postal_code,
+                'salt'=>$m->salt
+            ];
+            return $this->view->render($response,'profil.twig', $val);
+
+        }else{
+                echo"failed";
+        }
     }
 }
