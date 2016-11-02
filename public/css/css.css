@@ -1,0 +1,25 @@
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #FFF;
+    opacity:  1;
+
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #FFF;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #FFF;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #FFF;
+    opacity:  1;
+
+}
+
+#recherche{
+    text-align: center;
+    border: solid 1px white;
+    padding: 0;
+    margin: 0;
+}
