@@ -12,4 +12,8 @@ $app->get('/signup', 'App\Controllers\UserController:signup')->setName('signup')
 
 $app->post('/signup', 'App\Controllers\UserController:addMember');
 
+$app->get('/postpic', 'App\Controllers\UserController:postpic')->setName('postpic');
+
+$app->post('/validpic', 'App\Controllers\UserController:thepic')->setName("validpic");
+
 $app->get('/about', 'App\Controllers\HomeController:about')->setName('about');
