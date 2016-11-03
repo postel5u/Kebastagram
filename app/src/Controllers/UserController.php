@@ -26,7 +26,7 @@ final class UserController
     public function dispatch(Request $request, Response $response, $args)
     {
         $this->logger->info("Home page action dispatched");
-		
+
 		$users = $this->model->show();
 
 		return $this->view->render($response, 'users.twig', ["data" => $users]);
@@ -161,4 +161,34 @@ final class UserController
             $this->view->render($response, 'login.twig', array('errors' => "error"));
         }
     }
+
+    public function postpic(Request $request, Response $response, $args){
+      return $this->view->render($response,'thepic.twig', array(   ));
+    }
+
+    public function thepic(Request $request, Response $response, $args){
+
+      //die(var_dump($_FILES));
+      $this->newpic();
+
+      return $this->view->render($response,'hello.twig', array(   ));
+    }
+
+    public function newpic(){
+      //var_dump($_FILES);
+      $data['file'] = $_FILES;
+      $data['text'] = $_POST;
+
+      echo json_encode($data);
+
+      $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+      $extension_upload = strtolower(  substr(  strrchr($_FILES['image']['name'], '.')  ,1)  );
+      if ( in_array($extension_upload,$extensions_valides) ) {
+        echo "Extension correcte";
+        $nom = "pics/test.$extension_upload";
+        $resultat = move_uploaded_file($_FILES['image']['tmp_name'],$nom);
+        if ($resultat) echo "Transfert réussi";
+      }
+    }
 }
+

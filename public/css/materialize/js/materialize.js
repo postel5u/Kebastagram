@@ -2029,7 +2029,7 @@ $(document).ready(function(){
         }
         else {
           // Insert as text;
-          toast.innerHTML = html; 
+          toast.innerHTML = html;
         }
         // Bind hammer
         var hammerHandler = new Hammer(toast, {prevent_default: false});
@@ -7466,3 +7466,55 @@ Picker.extend( 'pickadate', DatePicker )
       }
     }; // Plugin end
 }( jQuery ));
+
+//Upload pic
+
+$(function () {
+    $('#my_form').on('submit', function (e) {
+        // On empêche le navigateur de soumettre le formulaire
+        e.preventDefault();
+
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, // obligatoire pour de l'upload
+            processData: false, // obligatoire pour de l'upload
+            dataType: 'json', // selon le retour attendu
+            data: data,
+            complete: function (response) {
+                 $('body').html(response.responseText);
+            }
+        });
+    });
+
+    // A chaque sélection de fichier
+    $('#my_form').find('input[name="image"]').on('change', function (e) {
+        var files = $(this)[0].files;
+
+        if (files.length > 0) {
+            // On part du principe qu'il n'y qu'un seul fichier
+            // étant donné que l'on a pas renseigné l'attribut "multiple"
+            var file = files[0],
+                $image_preview = $('#image_preview');
+
+            // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
+            $image_preview.find('.thumbnail').removeClass('hiddendiv');
+            $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
+            $image_preview.find('h4').html(file.name);
+            $image_preview.find('.caption p:first').html(file.size +' bytes');
+        }
+        console.log(files);
+    });
+
+    // Bouton "Annuler" pour vider le champ d'upload
+    $('#image_preview').find('button[type="button"]').on('click', function (e) {
+        e.preventDefault();
+
+        $('#my_form').find('input[name="image"]').val('');
+        $('#image_preview').find('.thumbnail').addClass('hiddendiv');
+    });
+});
