@@ -1,0 +1,58 @@
+{% include "header.twig" %}
+{%  if erreur is defined %}
+    <p class="red-text">Rechercher seulement avec un "#" ou un "@"</p>
+{% else %}
+{%  endif  %}
+{% if users is defined %}
+    {% if users|length == 0 %}
+    <p>Je n'ai rien trouvé pour @{{ recherche }} ...</p>
+{% else %}
+    <br>
+    <h4 class="center">Resultat pour @{{ recherche }} : </h4>
+    <br>
+    <ul class="collection" style="width: 60%;  margin: auto; ">
+    {% for u in users %}
+    <li class="collection-item avatar">
+      <img src="images/bg_home.bmp" alt="" class="circle">
+      <span class="title">@{{ u.username }}</span>
+      <p>{{ u.firstname }} {{ u.lastname }}</p>
+      <p>{{ u.postal_code }} {{ u.city }}</p>
+      <a href="#!" class="secondary-content"><i class="material-icons medium">send</i></a>
+    </li>
+ {% endfor %}
+    </ul>
+    {% endif %}
+
+{% else %}
+    {% if pics|length == 0 %}
+        <p>Je n'ai rien trouvé #{{ recherche }} ...</p>
+    {% else %}
+        <h4 class="center">Resultat pour #{{ recherche }} : </h4>
+        <div class="container">
+            <div class="row">
+        {% for p in pics %}
+
+
+                    <div class="col s6">
+                        <div class="card large">
+                            <div class="card-image">
+                                <img src="images/bg_home.bmp">
+                            </div>
+                            <div class="card-content">
+                                <p>{{ p.description }}</p>
+                            </div>
+                            <div class="card-action">
+                                {%  set tags = p.tag|split(',') %}
+                                    <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+    {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endif %}
