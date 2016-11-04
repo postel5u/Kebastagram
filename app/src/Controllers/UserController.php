@@ -303,5 +303,10 @@ final class UserController
         if ($resultat) echo "Transfert réussi";
       }
     }
+
+    public function logout(Request $request, Response $response, $args){
+        unset($_SESSION['id']);
+        return $response->withRedirect($this->router->pathFor('homepage'));
+    }
 }
 
