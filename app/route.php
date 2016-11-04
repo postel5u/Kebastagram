@@ -13,7 +13,6 @@ $app->post('/login', 'App\Controllers\UserController:login');
 
 $app->get('/logout', 'App\Controllers\UserController:logout')->setName('logout');
 
-
 $app->get('/signup', 'App\Controllers\UserController:signup')->setName('signup') ;
 
 $app->get('/search', 'App\Controllers\HomeController:search')->setName('search') ;

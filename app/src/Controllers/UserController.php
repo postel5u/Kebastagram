@@ -308,5 +308,6 @@ final class UserController
         unset($_SESSION['uniqid']);
         return $response->withRedirect($this->router->pathFor('homepage'));
     }
+
 }
 
