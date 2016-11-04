@@ -4,7 +4,8 @@
 	controller needs to be registered in dependency.php
 */
 
-$app->get('/', 'App\Controllers\HomeController:dispatch')->setName('homepage');
+
+$app->get('/', 'App\Controllers\HomeController:dispatch')->setName('homepage')->add($mw);
 
 $app->get('/login', 'App\Controllers\UserController:loginPage')->setName('login');
 

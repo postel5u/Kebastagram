@@ -105,7 +105,7 @@ final class UserController
             }
             $dateFin = substr($dateFin, 1);
 
-            $m->id = uniqid();
+            $m->uniqid = uniqid();
             $m->lastname = $nom;
             $m->firstname = $prenom;
             $m->date_of_birth = $dateFin;
@@ -253,9 +253,9 @@ final class UserController
                 $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
                 $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
                 $m = User::where("username", $username)->orwhere("email", $username)->get()->first();
-                if(isset($m->id)) {
+                if(isset($m->uniqid)) {
                     if (password_verify($password, $m->password)) {
-                        $_SESSION["id"] = $m->id;
+                        $_SESSION["uniqid"] = $m->uniqid;
                         return $response->withRedirect($this->router->pathFor('homepage'));
                     }
                     else {
@@ -305,7 +305,7 @@ final class UserController
     }
 
     public function logout(Request $request, Response $response, $args){
-        unset($_SESSION['id']);
+        unset($_SESSION['uniqid']);
         return $response->withRedirect($this->router->pathFor('homepage'));
     }
 }
