@@ -29,3 +29,7 @@
 #dropdown1 a{
     font-size: 0.9rem;
 }
+
+.picture{
+  max-height: 300px;
+}
