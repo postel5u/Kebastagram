@@ -14,7 +14,7 @@ $(function () {
             },
             passwordValidate: {
                 required: true,
-                equalTo: "#mdp"
+                equalTo: "#password"
             },
             firstname: {
                 required : true
