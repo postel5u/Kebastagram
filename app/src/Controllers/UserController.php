@@ -348,6 +348,7 @@ final class UserController
           $pic->description = $description;
           $pic->user = $user;
           $pic->tag = $tag;
+          $pic->date = date("Y-m-d H:i:s");
           $pic->save();
         }
       }
