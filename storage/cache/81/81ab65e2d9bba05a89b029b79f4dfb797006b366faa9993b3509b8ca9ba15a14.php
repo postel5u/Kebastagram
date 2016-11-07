@@ -22,51 +22,66 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
 
 
     <div class=\"container\">
-        <form method=\"post\" name=\"signup\" class=\"col s12\">
+        <form method=\"post\" id='signup'    name=\"signup\" class=\"col s12\">
 
             <div class=\"row\">
                 <div class=\"input-field col s6\">
-                    <input name=\"firstname\" type=\"text\" placeholder=\"First Name\">
+                    <input id=\"firstname\" name=\"firstname\" aria-required=\"true\" type=\"text\" placeholder=\"First Name\" required class=\"validate\">
+                    <label for=\"firstname\" data-error=\"Champ obligatoir\"></label>
                 </div>
                 <div class=\"input-field col s6\">
-                    <input name=\"name\" type=\"text\" placeholder=\"Name\">
+                    <input id=\"name\" name=\"name\" type=\"text\" placeholder=\"Name\" required=\"\" class=\"validate\">
+                    <label for=\"name\" data-error=\"Champ obligatoir\"></label>
                 </div>
 
 
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"username\" type=\"text\" placeholder=\"username\">
+                    <input id=\"username\" name=\"username\" type=\"text\" placeholder=\"username\" required class=\"validate\">
+                    <label for=\"username\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"password\" type=\"password\" placeholder=\"password\">
+                    <input id=\"password\" name=\"password\" type=\"password\" placeholder=\"password\" required class=\"validate\">
+                    <label for=\"password\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"email\" type=\"email\" placeholder=\"email@email.com\">
+                    <input id=\"passwordValidate\" name=\"passwordValidate\" type=\"password\" placeholder=\"password validate\"  required class=\"validate\">
+                    <label for=\"passwordValidate\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"birthday\" type=\"date\" placeholder=\"MM/DD/YYYY\">
+                    <input id=\"email\" name=\"email\" type=\"email\" placeholder=\"email@email.com\" required class=\"validate\">
+                    <label for=\"email\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"address\" type=\"text\" placeholder=\"18 rue fromage\">
+                    <input id=\"birthday\" name=\"birthday\" type=\"date\" placeholder=\"MM/DD/YYYY\" required class=\"validate datepicker\">
+                    <label for=\"birthday\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"city\" type=\"text\" placeholder=\"Paris\">
+                    <input id=\"address\" name=\"address\" type=\"text\" placeholder=\"18 rue fromage\" required class=\"validate\">
+                    <label for=\"address\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
             <div class=\"row\">
                 <div class=\"input-field col s12\">
-                    <input name=\"codepostal\" type=\"text\" placeholder=\"75000\">
+                    <input id=\"city\" name=\"city\" type=\"text\" placeholder=\"Paris\" required class=\"validate\">
+                    <label for=\"city\" data-error=\"Champ obligatoir\"></label>
+                </div>
+            </div>
+            <div class=\"row\">
+                <div class=\"input-field col s12\">
+                    <input id=\"codepostal\" name=\"codepostal\" type=\"text\" placeholder=\"75000\" required class=\"validate\">
+                    <label for=\"codepostal\" data-error=\"Champ obligatoir\"></label>
                 </div>
             </div>
 
@@ -80,13 +95,16 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
         </form>
 
     </div>
+<script>
+    \$('#signup').validate() ;
+</script>
 
 
 
 
 ";
-        // line 68
-        $this->loadTemplate("footer.twig", "signup.twig", 68)->display($context);
+        // line 86
+        $this->loadTemplate("footer.twig", "signup.twig", 86)->display($context);
     }
 
     public function getTemplateName()
@@ -101,7 +119,7 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
 
     public function getDebugInfo()
     {
-        return array (  89 => 68,  21 => 2,  19 => 1,);
+        return array (  107 => 86,  21 => 2,  19 => 1,);
     }
 }
 /* {%  include 'header.twig' %}*/
@@ -109,51 +127,66 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
 /* */
 /* */
 /*     <div class="container">*/
-/*         <form method="post" name="signup" class="col s12">*/
+/*         <form method="post" id='signup'    name="signup" class="col s12">*/
 /* */
 /*             <div class="row">*/
 /*                 <div class="input-field col s6">*/
-/*                     <input name="firstname" type="text" placeholder="First Name">*/
+/*                     <input id="firstname" name="firstname" aria-required="true" type="text" placeholder="First Name" required class="validate">*/
+/*                     <label for="firstname" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*                 <div class="input-field col s6">*/
-/*                     <input name="name" type="text" placeholder="Name">*/
+/*                     <input id="name" name="name" type="text" placeholder="Name" required="" class="validate">*/
+/*                     <label for="name" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /* */
 /* */
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="username" type="text" placeholder="username">*/
+/*                     <input id="username" name="username" type="text" placeholder="username" required class="validate">*/
+/*                     <label for="username" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="password" type="password" placeholder="password">*/
+/*                     <input id="password" name="password" type="password" placeholder="password" required class="validate">*/
+/*                     <label for="password" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="email" type="email" placeholder="email@email.com">*/
+/*                     <input id="passwordValidate" name="passwordValidate" type="password" placeholder="password validate"  required class="validate">*/
+/*                     <label for="passwordValidate" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="birthday" type="date" placeholder="MM/DD/YYYY">*/
+/*                     <input id="email" name="email" type="email" placeholder="email@email.com" required class="validate">*/
+/*                     <label for="email" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="address" type="text" placeholder="18 rue fromage">*/
+/*                     <input id="birthday" name="birthday" type="date" placeholder="MM/DD/YYYY" required class="validate datepicker">*/
+/*                     <label for="birthday" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="city" type="text" placeholder="Paris">*/
+/*                     <input id="address" name="address" type="text" placeholder="18 rue fromage" required class="validate">*/
+/*                     <label for="address" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /*             <div class="row">*/
 /*                 <div class="input-field col s12">*/
-/*                     <input name="codepostal" type="text" placeholder="75000">*/
+/*                     <input id="city" name="city" type="text" placeholder="Paris" required class="validate">*/
+/*                     <label for="city" data-error="Champ obligatoir"></label>*/
+/*                 </div>*/
+/*             </div>*/
+/*             <div class="row">*/
+/*                 <div class="input-field col s12">*/
+/*                     <input id="codepostal" name="codepostal" type="text" placeholder="75000" required class="validate">*/
+/*                     <label for="codepostal" data-error="Champ obligatoir"></label>*/
 /*                 </div>*/
 /*             </div>*/
 /* */
@@ -167,6 +200,9 @@ class __TwigTemplate_fd4f6757fd548ac52859874afa931b6f16c99748b38e9751554323ce7c8
 /*         </form>*/
 /* */
 /*     </div>*/
+/* <script>*/
+/*     $('#signup').validate() ;*/
+/* </script>*/
 /* */
 /* */
 /* */
