@@ -30,6 +30,7 @@
     font-size: 0.9rem;
 }
 
+
 nav img{
     padding-left: 2px;
     padding-right: 2px;
@@ -135,4 +136,8 @@ nav img{
 
 .img-comment{
     display: inline !important;
+}
+
+.picture{
+  max-height: 300px;
 }

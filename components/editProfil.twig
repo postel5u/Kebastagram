@@ -2,7 +2,7 @@
 <div class="row">
     <div class="center col s6">
 
-        <form  method="post" action="acceptEdit">
+        <form id="profil" method="post" action="acceptEdit" enctype="multipart/form-data">
             <label>Profil de :</label> <input type="text" name="username" value=" {{ username }}" placeholder=" {{ username }}"/>
             <label>Mot de passe:</label> <input type="password" name="Newpassword"/>
             <label>Nom : </label> <input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ lastname }}"/>
@@ -13,7 +13,8 @@
             <label> Ville : </label> <input type="text" name="city" value="{{ city }} " placeholder="{{ city }}"/>
             <label> email : </label> <input type="text" name="email" value="{{ email }}" placeholder="{{ email }}"/>
             <img src="{% if profil_picture == null %} image/profil.png {% else %} {{ profil_picture }} {% endif %}"/>
-
+            <input type="file" class="" name="image" accept="image/*" value="{% if profil_picture == null %} image/profil.png {% else %}{{ profil_picture }}{% endif %}">
+            {% if profil_picture != null %}<input type="text" name="image" value="{{ profil_picture }}" style="display:none;"/>{% endif %}
             <div class="row">
                 <label>Mot de  passe actuel : </label><input type="password" name="password"/>
                 <button class="btn waves-effect waves-light" type="submit"  >Valider les changements
@@ -29,5 +30,4 @@
     </div>
 
 </div>
-
 

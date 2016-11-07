@@ -22,7 +22,7 @@
     </ul>
     {% endif %}
 
-{% else %}
+{% elseif pics is defined %}
     {% if pics|length == 0 %}
         <p>Je n'ai rien trouvé #{{ recherche }} ...</p>
     {% else %}
@@ -33,7 +33,7 @@
                     <div class="col s6">
                         <div class="card large">
                             <div class="card-image">
-                                <img src="images/bg_home.bmp">
+                                <img class="picture" src="{{ p.link }}">
                             </div>
                             <div class="card-content">
                                 <p>{{ p.description }}</p>

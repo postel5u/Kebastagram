@@ -9,7 +9,7 @@ $capsule->addConnection([
     'host'      => 'localhost',
     'database'  => 'kebabstagram',
     'username'  => 'root',
-    'password'  => 'root',
+    'password'  => 'alexandre',
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',

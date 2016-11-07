@@ -7501,6 +7501,26 @@ $(function () {
             var file = files[0],
                 $image_preview = $('#image_preview');
 
+
+            var MAX_WIDTH = 460;
+            var MAX_HEIGHT = 300;
+            var width = file.width;
+            var height = file.height;
+
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+              }
+            }
+
+            file.width = width+'px';
+            file.height = height+'px';
             // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
             $image_preview.find('.thumbnail').removeClass('hiddendiv');
             $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
@@ -7516,5 +7536,29 @@ $(function () {
 
         $('#my_form').find('input[name="image"]').val('');
         $('#image_preview').find('.thumbnail').addClass('hiddendiv');
+    });
+});
+
+
+$(function () {
+    $('#profil').on('submit', function (e) {
+        // On empêche le navigateur de soumettre le formulaire
+        e.preventDefault();
+
+        var $form = $(this);
+        var formdata = (window.FormData) ? new FormData($form[0]) : null;
+        var data = (formdata !== null) ? formdata : $form.serialize();
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            contentType: false, // obligatoire pour de l'upload
+            processData: false, // obligatoire pour de l'upload
+            dataType: 'json', // selon le retour attendu
+            data: data,
+            complete: function (response) {
+                 $('body').html(response.responseText);
+            }
+        });
     });
 });

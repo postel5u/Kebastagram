@@ -116,10 +116,7 @@ final class UserController
             $m->password = $pass;
             $m->username = $username;
             $m->save ();
-            /**
-            $_SESSION['profile']= $m->prenom ." ".$m->nom;
-            $_SESSION['email'] = $m->mail;
-            $_SESSION['idMembre']= $m->id;*/
+
 
         }
 
@@ -141,7 +138,7 @@ final class UserController
 
 
     public function editProfil(Request $request, Response $response, $args){
-        $m = \App\Models\User::find('5819b4755d580');
+        $m = \App\Models\User::find('581c9cc0ddc41');
         $val = ['username'=>$m->username,
             'user'=>$m,
             'lastname' => $m->lastname,
@@ -152,6 +149,7 @@ final class UserController
             'password'=>$m->password,
             "city"=>$m->city,
             "postal_code"=>$m->postal_code,
+            "profil_picture"=>$m->profil_picture,
             'salt'=>$m->salt
         ];
         return $this->view->render($response,'editProfil.twig', $val);
@@ -159,8 +157,9 @@ final class UserController
 
     public function acceptEdit(Request $request, Response $response, $args)
     {
-        $m = \App\Models\User::find('5819b4755d580');
+        $m = \App\Models\User::find('581c9cc0ddc41');
         if (password_verify($_POST["password"], $m->password)) {
+
             $nom = $_POST["lastname"];
             $prenom = $_POST["firstname"];
             $email = $_POST["email"];
@@ -170,6 +169,28 @@ final class UserController
             $city = $_POST["city"];
             $dateNaiss = $_POST["date_of_birth"];
             $postal_code = $_POST["postal_code"];
+            $nom_pic = $_POST["image"];
+
+            $data['file'] = $_FILES;
+
+            //echo json_encode($data);
+
+            $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+            $extension_upload = strtolower(  substr(  strrchr($_FILES['image']['name'], '.')  ,1)  );
+            if ( in_array($extension_upload,$extensions_valides) ) {
+              echo "Extension correcte";
+              $n = $_FILES['image']['name'];
+              $nom_pic = "pics/$n";
+
+              $resultat = move_uploaded_file($_FILES['image']['tmp_name'],$nom_pic);
+              if ($resultat) {
+                echo "Transfert réussi";
+
+              }else{
+                $nom_pic = "image/profil.png";
+              }
+            }
+
             if ($nom != filter_var($nom, FILTER_SANITIZE_STRING)) {
                 array_push($errors, "Nom invalide, merci de corriger");
             }
@@ -223,6 +244,7 @@ final class UserController
             $m->city = $city;
             $m->password = $pass;
             $m->username = $username;
+            $m->profil_picture = $nom_pic;
             $m->save();
             $val = ['username' => $m->username,
                 'user' => $m,
@@ -234,12 +256,15 @@ final class UserController
                 'password' => $m->password,
                 "city" => $m->city,
                 "postal_code" => $m->postal_code,
+                "profil_picture"=>$m->profil_picture,
                 'salt' => $m->salt
             ];
             return $this->view->render($response, 'profil.twig', $val);
 
         } else {
             echo "failed";
+            echo $_POST["image"];
+            echo $m->password;
         }
     }
 
@@ -298,9 +323,33 @@ final class UserController
       $extension_upload = strtolower(  substr(  strrchr($_FILES['image']['name'], '.')  ,1)  );
       if ( in_array($extension_upload,$extensions_valides) ) {
         echo "Extension correcte";
-        $nom = "pics/test.$extension_upload";
+        $n = $_FILES['image']['name'];
+        $nom = "pics/$n";
+        $id = uniqid();
+        $user = $_SESSION['id'];
+        if (isset($_POST['content'])){
+          $description = $_POST['content'];
+        }else{
+          $description = "L\'utilisateur n'a fourni aucune description.";
+        }
+
+        if (isset($_POST['title'])){
+          $tag = $_POST['title'];
+        }else{
+          $tag = "";
+        }
+
         $resultat = move_uploaded_file($_FILES['image']['tmp_name'],$nom);
-        if ($resultat) echo "Transfert réussi";
+        if ($resultat) {
+          echo "Transfert réussi";
+          $pic = new \App\Models\Pictures();
+          $pic->id = $id;
+          $pic->link = $nom;
+          $pic->description = $description;
+          $pic->user = $user;
+          $pic->tag = $tag;
+          $pic->save();
+        }
       }
     }
 
@@ -310,4 +359,3 @@ final class UserController
     }
 
 }
-
