@@ -16,6 +16,7 @@ final class UserController
     private $user;
     private $router;
 
+<<<<<<< HEAD
     function resize_image($file,
                               $string             = null,
                               $width              = 0,
@@ -123,6 +124,34 @@ final class UserController
     }
     return true;
   }
+=======
+    function resize_image($file, $w, $h, $crop=FALSE) {
+        list($width, $height) = getimagesize($file);
+        $r = $width / $height;
+        if ($crop) {
+            if ($width > $height) {
+                $width = ceil($width-($width*abs($r-$w/$h)));
+            } else {
+                $height = ceil($height-($height*abs($r-$w/$h)));
+            }
+            $newwidth = $w;
+            $newheight = $h;
+        } else {
+            if ($w/$h > $r) {
+                $newwidth = $h*$r;
+                $newheight = $h;
+            } else {
+                $newheight = $w/$r;
+                $newwidth = $w;
+            }
+        }
+        $src = imagecreatefromjpeg($file);
+        $dst = imagecreatetruecolor($newwidth, $newheight);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+        return $dst;
+    }
+>>>>>>> 9cf5d2639d02588a66e9fea51d740798b9ed4297
 
     public function __construct($c)
     {
@@ -260,7 +289,6 @@ final class UserController
             "city"=>$m->city,
             "postal_code"=>$m->postal_code,
             "profil_picture"=>$m->profil_picture,
-            'salt'=>$m->salt
         ];
         return $this->view->render($response,'editProfil.twig', $val);
     }
@@ -290,6 +318,7 @@ final class UserController
             if ( in_array($extension_upload,$extensions_valides) ) {
               echo "Extension correcte";
               $n = $_FILES['image']['name'];
+              $n = $this->resize_image($n,300,300);
               $nom_pic = "pics/$n";
 
               $pic_r = $_FILES['image']['tmp_name'];
