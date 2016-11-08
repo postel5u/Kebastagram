@@ -18,7 +18,6 @@ $app->add(function ($request, $response, $next) {
     }else{
         $this->view->render($response,'header.twig');
     }
-
     $response = $next($request, $response);
     $this->view->render($response,'footer.twig');
 
@@ -34,7 +33,7 @@ $mw = function ($request, $response, $next) {
         $user_follow = array();
         foreach ($f as $follow){
             $user_follow = User::where('uniqid',$follow->id_user_follow)->get();
-            $p = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$follow->id_user_follow'");
+            $p = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$follow->id_user_follow' ORDER BY date DESC ");
         }
         foreach ($p as $pics){
             $d = abs(strtotime($pics->date)-time());

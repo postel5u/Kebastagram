@@ -24,7 +24,6 @@ final class HomeController
     public function dispatch(Request $request, Response $response, $args)
     {
         $this->logger->info("Home page action dispatched");
-		
         $this->view->render($response, 'hello.twig');
 		
         return $response;
