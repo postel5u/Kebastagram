@@ -15,5 +15,6 @@ class Follows extends Model
 {
     protected $table = "follows";
     protected $primaryKey ="id_user";
+    public $incrementing = false;
     public $timestamps = false;
 }
