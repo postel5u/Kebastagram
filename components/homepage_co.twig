@@ -1,15 +1,4 @@
-<html lang="fr">
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
-    <title>Blue Ocean - Materialize</title>
-    <!-- CSS  -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-</head>
-
-<body>
 <div class="container">
     <div class="timeline">
 {% for p in pictures %}
@@ -38,9 +27,9 @@
                         {%  set tags = p.tag|split(',') %}
                         <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
 
+                    </div>
                 </div>
-                </div>
-                <div class="timeline-badge"><a href=""><img src="https://avatars1.githubusercontent.com/u/49341?v=3&s=40" alt="" class="circle responsive-img valign" >
+                <div class="timeline-badge"><a href=""><img src="{{ p.profil_picture }}" alt="" class="circle responsive-img valign" >
                     </a></div>
 
             </div>
