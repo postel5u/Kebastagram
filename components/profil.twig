@@ -1,6 +1,6 @@
 
-<div class="row">
-      <div class="col s4 offset-s1">
+<div class="row" style="padding-top:5%">
+      <div class="col s4 offset-s2">
         <h4>Profil de : {{ username }}</h4>
         <p> Nom : {{  lastname }}</p>
         <p> Prenom : {{  firstname }}</p>
@@ -8,7 +8,7 @@
         <p> adresse : {{ address }}</p>
         <p> email : {{ email }}</p>
       </div>
-      <div class="col s6 offset-s1">
+      <div class="col s5 offset-s1">
         <img src="{% if profil_picture == null %} image/profil.png {% else %} {{ profil_picture }} {% endif %}">
         <div class="row">
             <a class="btn waves-effect waves-light"  href="editprofil">éditer profil
