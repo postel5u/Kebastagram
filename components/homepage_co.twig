@@ -37,8 +37,11 @@
                         <p>{{ p.description }}</p>
                         {%  set tags = p.tag|split(',') %}
                         <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
-
-                </div>
+                        <hr>
+                        <textarea id="textarea" placeholder="Ecrivez votre commentaires ici..." class="materialize-textarea" ></textarea>
+                        <button id="comment_{{ p.uniqid }}" class="btn waves-effect waves-light right postCommentaire"><i class="material-icons right">send</i>envoyer</button>
+                        <a href="comments/{{ p.uniqid }}" >Voir tout les commentaires... </a>
+                    </div>
                 </div>
                 <div class="timeline-badge"><a href=""><img src="https://avatars1.githubusercontent.com/u/49341?v=3&s=40" alt="" class="circle responsive-img valign" >
                     </a></div>

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Comments;
 use App\Models\User;
 use App\Models\Pictures;
 use Psr\Log\LoggerInterface;
@@ -51,5 +52,12 @@ final class HomeController
         }else{
             $this->view->render($response, 'hello.twig');
         }
+    }
+
+    public function comments(Request $request, Response $response, $args){
+        echo $args['id'];
+        $p = Pictures::find($args['id']);
+        $c = Comments::where('id_picture', $args['id']);
+        $this->view->render($response, 'comments.twig', array('pictures' => $p, 'comments' => $c));
     }
 }

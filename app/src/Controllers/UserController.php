@@ -138,7 +138,7 @@ final class UserController
 
 
     public function editProfil(Request $request, Response $response, $args){
-        $m = \App\Models\User::find('581c9cc0ddc41');
+        $m = \App\Models\User::find($_SESSION['uniqid']);
         $val = ['username'=>$m->username,
             'user'=>$m,
             'lastname' => $m->lastname,
