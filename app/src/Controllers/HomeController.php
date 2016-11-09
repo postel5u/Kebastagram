@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Comments;
 use App\Models\User;
 use App\Models\Pictures;
+use Illuminate\Database\Capsule\Manager;
 use Psr\Log\LoggerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -55,9 +56,9 @@ final class HomeController
     }
 
     public function comments(Request $request, Response $response, $args){
-        echo $args['id'];
-        $p = Pictures::find($args['id']);
-        $c = Comments::where('id_picture', $args['id']);
-        $this->view->render($response, 'comments.twig', array('pictures' => $p, 'comments' => $c));
+        $id = $args['id'];
+        $p = Manager::select("select * from users, pictures where users.uniqid = pictures.user and pictures.id='$id'");
+        $c = Manager::select("select * from users, comments where users.uniqid = comments.id_user and comments.id_picture='$id'");
+        $this->view->render($response, 'comments.twig', array('picture' => $p[0], 'comments' => $c));
     }
 }
