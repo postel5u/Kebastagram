@@ -289,7 +289,7 @@ final class UserController
             if ( in_array($extension_upload,$extensions_valides) ) {
               echo "Extension correcte";
               $n = $_FILES['image']['name'];
-              $n = $this->resize_image($n,300,300);
+
               $nom_pic = "pics/$n";
 
               $pic_r = $_FILES['image']['tmp_name'];
@@ -453,7 +453,9 @@ final class UserController
           $tag = "";
         }
         $pic_r = $_FILES['image']['tmp_name'];
+        var_dump($pic_r);
         $this->resize_image($pic_r,null,300,300);
+        var_dump($pic_r);
         $resultat = move_uploaded_file($pic_r,$nom);
         if ($resultat) {
           echo "Transfert réussi";
