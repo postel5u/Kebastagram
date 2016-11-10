@@ -7501,26 +7501,6 @@ $(function () {
             var file = files[0],
                 $image_preview = $('#image_preview');
 
-
-            var MAX_WIDTH = 460;
-            var MAX_HEIGHT = 300;
-            var width = file.width;
-            var height = file.height;
-
-            if (width > height) {
-              if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
-              }
-            } else {
-              if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
-              }
-            }
-
-            file.width = width+'px';
-            file.height = height+'px';
             // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
             $image_preview.find('.thumbnail').removeClass('hiddendiv');
             $image_preview.find('img').attr('src', window.URL.createObjectURL(file));

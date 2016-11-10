@@ -16,6 +16,114 @@ final class UserController
     private $user;
     private $router;
 
+    function resize_image($file,
+                              $string             = null,
+                              $width              = 0,
+                              $height             = 0,
+                              $proportional       = false,
+                              $output             = 'file',
+                              $delete_original    = true,
+                              $use_linux_commands = false,
+                              $quality            = 100,
+                              $grayscale          = false
+  		 ) {
+
+    if ( $height <= 0 && $width <= 0 ) return false;
+    if ( $file === null && $string === null ) return false;
+    # Setting defaults and meta
+    $info                         = $file !== null ? getimagesize($file) : getimagesizefromstring($string);
+    $image                        = '';
+    $final_width                  = 0;
+    $final_height                 = 0;
+    list($width_old, $height_old) = $info;
+	$cropHeight = $cropWidth = 0;
+    # Calculating proportionality
+    if ($proportional) {
+      if      ($width  == 0)  $factor = $height/$height_old;
+      elseif  ($height == 0)  $factor = $width/$width_old;
+      else                    $factor = min( $width / $width_old, $height / $height_old );
+      $final_width  = round( $width_old * $factor );
+      $final_height = round( $height_old * $factor );
+    }
+    else {
+      $final_width = ( $width <= 0 ) ? $width_old : $width;
+      $final_height = ( $height <= 0 ) ? $height_old : $height;
+	  $widthX = $width_old / $width;
+	  $heightX = $height_old / $height;
+
+	  $x = min($widthX, $heightX);
+	  $cropWidth = ($width_old - $width * $x) / 2;
+	  $cropHeight = ($height_old - $height * $x) / 2;
+    }
+    # Loading image to memory according to type
+    switch ( $info[2] ) {
+      case IMAGETYPE_JPEG:  $file !== null ? $image = imagecreatefromjpeg($file) : $image = imagecreatefromstring($string);  break;
+      case IMAGETYPE_GIF:   $file !== null ? $image = imagecreatefromgif($file)  : $image = imagecreatefromstring($string);  break;
+      case IMAGETYPE_PNG:   $file !== null ? $image = imagecreatefrompng($file)  : $image = imagecreatefromstring($string);  break;
+      default: return false;
+    }
+
+    # Making the image grayscale, if needed
+    if ($grayscale) {
+      imagefilter($image, IMG_FILTER_GRAYSCALE);
+    }
+
+    # This is the resizing/resampling/transparency-preserving magic
+    $image_resized = imagecreatetruecolor( $final_width, $final_height );
+    if ( ($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG) ) {
+      $transparency = imagecolortransparent($image);
+      $palletsize = imagecolorstotal($image);
+      if ($transparency >= 0 && $transparency < $palletsize) {
+        $transparent_color  = imagecolorsforindex($image, $transparency);
+        $transparency       = imagecolorallocate($image_resized, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
+        imagefill($image_resized, 0, 0, $transparency);
+        imagecolortransparent($image_resized, $transparency);
+      }
+      elseif ($info[2] == IMAGETYPE_PNG) {
+        imagealphablending($image_resized, false);
+        $color = imagecolorallocatealpha($image_resized, 0, 0, 0, 127);
+        imagefill($image_resized, 0, 0, $color);
+        imagesavealpha($image_resized, true);
+      }
+    }
+    imagecopyresampled($image_resized, $image, 0, 0, $cropWidth, $cropHeight, $final_width, $final_height, $width_old - 2 * $cropWidth, $height_old - 2 * $cropHeight);
+
+
+    # Taking care of original, if needed
+    if ( $delete_original ) {
+      if ( $use_linux_commands ) exec('rm '.$file);
+      else @unlink($file);
+    }
+    # Preparing a method of providing result
+    switch ( strtolower($output) ) {
+      case 'browser':
+        $mime = image_type_to_mime_type($info[2]);
+        header("Content-type: $mime");
+        $output = NULL;
+      break;
+      case 'file':
+        $output = $file;
+      break;
+      case 'return':
+        return $image_resized;
+      break;
+      default:
+      break;
+    }
+
+    # Writing image according to type to the output destination and image quality
+    switch ( $info[2] ) {
+      case IMAGETYPE_GIF:   imagegif($image_resized, $output);    break;
+      case IMAGETYPE_JPEG:  imagejpeg($image_resized, $output, $quality);   break;
+      case IMAGETYPE_PNG:
+        $quality = 9 - (int)((0.9*$quality)/10.0);
+        imagepng($image_resized, $output, $quality);
+        break;
+      default: return false;
+    }
+    return true;
+  }
+
     public function __construct($c)
     {
         $this->view = $c->get('view');
@@ -124,21 +232,25 @@ final class UserController
     }
 
     public function profil(Request $request, Response $response, $args){
-        $m = \App\Models\User::find('5819b4755d580');
+        $m = \App\Models\User::where("uniqid","=",$_SESSION['uniqid'])->first();
+        $pics = \App\Models\Pictures::where("user","=",$_SESSION['uniqid'])->get();
         $val = ['username'=>$m->username,
                     'lastname' => $m->lastname,
                     'firstname'=> $m->firstname,
                     'date_of_birth'=>$m->date_of_birth,
                     'address'=>$m->address,
-                    'email'=>$m->email
+                    "profil_picture"=>$m->profil_picture,
+                    'email'=>$m->email,
+                    'pictures'=>$pics
             ];
-
         return $this->view->render($response,'profil.twig', $val);
     }
 
 
     public function editProfil(Request $request, Response $response, $args){
+
         $m = \App\Models\User::find($_SESSION['uniqid']);
+        
         $val = ['username'=>$m->username,
             'user'=>$m,
             'lastname' => $m->lastname,
@@ -150,20 +262,19 @@ final class UserController
             "city"=>$m->city,
             "postal_code"=>$m->postal_code,
             "profil_picture"=>$m->profil_picture,
-            'salt'=>$m->salt
         ];
         return $this->view->render($response,'editProfil.twig', $val);
     }
 
     public function acceptEdit(Request $request, Response $response, $args)
     {
-        $m = \App\Models\User::find('581c9cc0ddc41');
+        $m = \App\Models\User::where("uniqid","=",$_SESSION['uniqid'])->first();
         if (password_verify($_POST["password"], $m->password)) {
 
             $nom = $_POST["lastname"];
             $prenom = $_POST["firstname"];
             $email = $_POST["email"];
-            $adress = $_POST["adress"];
+            $adress = $_POST["address"];
             $username = $_POST["username"];
             $pass = $_POST["password"];
             $city = $_POST["city"];
@@ -180,9 +291,13 @@ final class UserController
             if ( in_array($extension_upload,$extensions_valides) ) {
               echo "Extension correcte";
               $n = $_FILES['image']['name'];
+              $n = $this->resize_image($n,300,300);
               $nom_pic = "pics/$n";
 
-              $resultat = move_uploaded_file($_FILES['image']['tmp_name'],$nom_pic);
+              $pic_r = $_FILES['image']['tmp_name'];
+              $this->resize_image($pic_r,null,200,200);
+              $resultat = move_uploaded_file($pic_r,$nom_pic);
+
               if ($resultat) {
                 echo "Transfert réussi";
 
@@ -234,6 +349,7 @@ final class UserController
                 $dateFin .= "-" . $date[$i - 1];
             }
             $dateFin = substr($dateFin, 1);
+
 
             $m->lastname = $nom;
             $m->firstname = $prenom;
@@ -326,7 +442,7 @@ final class UserController
         $n = $_FILES['image']['name'];
         $nom = "pics/$n";
         $id = uniqid();
-        $user = $_SESSION['id'];
+        $user = $_SESSION['uniqid'];
         if (isset($_POST['content'])){
           $description = $_POST['content'];
         }else{
@@ -338,8 +454,9 @@ final class UserController
         }else{
           $tag = "";
         }
-
-        $resultat = move_uploaded_file($_FILES['image']['tmp_name'],$nom);
+        $pic_r = $_FILES['image']['tmp_name'];
+        $this->resize_image($pic_r,null,300,300);
+        $resultat = move_uploaded_file($pic_r,$nom);
         if ($resultat) {
           echo "Transfert réussi";
           $pic = new \App\Models\Pictures();
