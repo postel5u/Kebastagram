@@ -33,4 +33,4 @@ $app->post('/acceptEdit', 'App\Controllers\UserController:acceptEdit')->setName(
 $app->post('/comments', 'App\Controllers\AjaxController:comment');
 $app->get('/comments/{id}', 'App\Controllers\HomeController:comments');
 
-$app->get('/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');
+$app->get('/profil/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');
