@@ -29,9 +29,12 @@
                         <button id="comment_{{ p.id }}" class="btn waves-effect waves-light right postCommentaire"><i class="material-icons right">send</i>envoyer</button>
                         <a href="comments/{{ p.id }}" >Voir tout les commentaires... </a>
                     </div>
-                </div>
 
+                </div>
             </div>
+                <div class="timeline-badge"><a href=""><img src="{{ p.profil_picture }}" alt="" class="circle responsive-img valign" >
+                    </a></div>
+    </div>
 
 {% endfor %}
 
