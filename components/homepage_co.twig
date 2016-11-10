@@ -1,39 +1,45 @@
-
 <div class="container">
     <div class="timeline">
-{% for p in pictures %}
-            <div class="timeline-event">
-                <div class="card timeline-content">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="{{ p.link }}">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator "><a class="grey-text text-darken-4" href="">{{ p.firstname }} {{ p.lastname }}</a></span>
-                        <p style="margin-top: -15px">@{{ p.username }}</p>
-                        <br>
-                        <p class="truncate activator" style="cursor: pointer !important;">{{ p.description }}</p>
-                        {%  set tags = p.tag|split(',') %}
-                        <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
-                        </p>
-                        <i class="material-icons right" style="cursor: pointer;margin-top: 10px">thumb_up</i>
-                        <p style="margin-top: 10px" class="left-align">{{ p.interval }}</p>
-                    </div>
-                    <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">{{ p.firstname }} {{ p.lastname }}<i class="material-icons right">close</i></span>
-                        <p style="margin-top: -10px">@{{ p.username }}</p>
-                        <p>{{ p.description }}</p>
-                        {%  set tags = p.tag|split(',') %}
-                        <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
-                        <hr>
-                        <textarea id="textarea" placeholder="Ecrivez votre commentaires ici..." class="materialize-textarea" ></textarea>
-                        <button id="comment_{{ p.id }}" class="btn waves-effect waves-light right postCommentaire"><i class="material-icons right">send</i>envoyer</button>
-                        <a href="comments/{{ p.id }}" >Voir tout les commentaires... </a>
-                    </div>
+        {% for p in pictures %}
+        <div class="timeline-event">
+            <div class="card timeline-content">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator" src="{{ p.link }}">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator "><a class="grey-text text-darken-4"
+                                                           href="">{{ p.firstname }} {{ p.lastname }}</a></span>
+                    <p style="margin-top: -15px">@{{ p.username }}</p>
+                    <br>
+                    <p class="truncate activator" style="cursor: pointer !important;">{{ p.description }}</p>
+                    {% set tags = p.tag|split(',') %}
+                    <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
+                    </p>
+                    <i class="material-icons right" style="cursor: pointer;margin-top: 10px">thumb_up</i>
+                    <p style="margin-top: 10px" class="left-align">{{ p.interval }}</p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">{{ p.firstname }} {{ p.lastname }}<i
+                                class="material-icons right">close</i></span>
+                    <p style="margin-top: -10px">@{{ p.username }}</p>
+                    <p>{{ p.description }}</p>
+                    {% set tags = p.tag|split(',') %}
+                    <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
+                    <hr>
+                    <textarea id="textarea" placeholder="Ecrivez votre commentaires ici..."
+                              class="materialize-textarea"></textarea>
+                    <button id="comment_{{ p.id }}" class="btn waves-effect waves-light right postCommentaire"><i
+                                class="material-icons right">send</i>envoyer
+                    </button>
+                    <a href="comments/{{ p.id }}">Voir tout les commentaires... </a>
                 </div>
 
             </div>
-
-{% endfor %}
-
+            <div class="timeline-badge"><a href=""><img src="/{{ p.profil_picture }}" alt=""
+                                                        class="circle responsive-img valign">
+                </a></div>
     </div>
-    </div>
+
+    {% endfor %}
+</div>
+</div>
