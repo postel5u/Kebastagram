@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 04 Novembre 2016 à 14:15
+-- Généré le :  Lun 07 Novembre 2016 à 14:42
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -42,6 +42,14 @@ CREATE TABLE `follows` (
   `id_user_follow` varchar(23) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `follows`
+--
+
+INSERT INTO `follows` (`id_user`, `id_user_follow`) VALUES
+('581af1b9c6525', 'z'),
+('581dd30a8b779', '581af1b9c6525');
+
 -- --------------------------------------------------------
 
 --
@@ -64,7 +72,11 @@ CREATE TABLE `pictures` (
 INSERT INTO `pictures` (`id`, `link`, `user`, `description`, `tag`, `date`) VALUES
 ('a', '', 'aze', 'tryuiolmù', 'ok,dacc', '2016-11-03 00:00:00'),
 ('aqsd', '', 'aze', 'tryuiolmù', 'ok,dacc', '2016-11-03 00:00:00'),
-('aqsdsdfqs', '', 'aze', 'tryuiolmù', 'ok,dacc', '2016-11-03 00:00:00');
+('aqsdsdfqs', 'images/bg_home.bmp', '581af1b9c6525', 'test usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usst usertesser', 'ok,dacc', '2016-10-20 00:00:00'),
+('jgcvjln', 'images/bg_home.bmp', '581af1b9c6525', 'test usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usst usertesser', 'ok,dacc', '2016-09-07 00:00:00'),
+('jgcvjlnv', 'images/bg_home.bmp', '581af1b9c6525', 'test usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usst usertesser', 'ok,dacc', '2015-10-07 00:00:00'),
+('jgcvjlnvd', 'images/bg_home.bmp', '581af1b9c6525', 'test usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usst usertesser', 'ok,dacc', '2016-11-07 14:11:00'),
+('jgcvjlnvdc', 'images/bg_home.bmp', '581af1b9c6525', 'test usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usertest usst usertesser', 'ok,dacc', '2016-11-07 14:14:35');
 
 -- --------------------------------------------------------
 
@@ -73,7 +85,7 @@ INSERT INTO `pictures` (`id`, `link`, `user`, `description`, `tag`, `date`) VALU
 --
 
 CREATE TABLE `users` (
-  `id` varchar(23) NOT NULL,
+  `uniqid` varchar(23) NOT NULL,
   `username` varchar(35) NOT NULL,
   `password` varchar(255) NOT NULL,
   `firstname` text NOT NULL,
@@ -82,21 +94,29 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `address` text NOT NULL,
   `postal_code` text NOT NULL,
-  `city` text NOT NULL
+  `city` text NOT NULL,
+  `profil_picture` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `firstname`, `lastname`, `date_of_birth`, `email`, `address`, `postal_code`, `city`) VALUES
-('1', 'Naay', '', 'Guillaume', 'Launay', '2016-11-01', '', '', '54000', 'Nancy'),
-('2', 'NickMyName', '', 'Alexendre', 'Pereira', '2016-11-01', '', '', '54000', 'Nancy'),
-('581af1b9c6525', 'guillaumelaunay', '$2y$12$v8Q5jsqLbIVU0YTjfKrq8usoPQ6fF8X4dcFBssW8FUcJj.S9P4WE6', 'Guillaume', 'Launay', '1996-05-18', 'gl55@hotmail.fr', '35 rue pasteur', '54000', 'Nancy');
+INSERT INTO `users` (`uniqid`, `username`, `password`, `firstname`, `lastname`, `date_of_birth`, `email`, `address`, `postal_code`, `city`, `profil_picture`) VALUES
+('1', 'Naay', '', 'Guillaume', 'Launay', '2016-11-01', '', '', '54000', 'Nancy', ''),
+('2', 'NickMyName', '', 'Alexendre', 'Pereira', '2016-11-01', '', '', '54000', 'Nancy', ''),
+('581af1b9c6525', 'guillaumelaunay', '$2y$12$v8Q5jsqLbIVU0YTjfKrq8usoPQ6fF8X4dcFBssW8FUcJj.S9P4WE6', 'Guillaume', 'Launay', '1996-05-18', 'gl55@hotmail.fr', '35 rue pasteur', '54000', 'Nancy', ''),
+('581dd30a8b779', 'Mimimiaouh', '$2y$12$mZJUc46IoKzVbaGtsOWOxuCaajkffpIPbsPRMvPjgPcwxyzyMel46', 'Myriam', 'Matmat', '1997-08-19', 'test@tes.fr', '35 rue pasteur', '54000', 'Nancy', '');
 
 --
 -- Index pour les tables exportées
 --
+
+--
+-- Index pour la table `follows`
+--
+ALTER TABLE `follows`
+  ADD PRIMARY KEY (`id_user`,`id_user_follow`);
 
 --
 -- Index pour la table `pictures`
@@ -108,7 +128,7 @@ ALTER TABLE `pictures`
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`uniqid`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

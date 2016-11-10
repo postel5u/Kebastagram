@@ -1,52 +1,38 @@
 
-<div class="row">
-            <div class="col-lg-6">
+<div class="row" style="padding-top:5%;">
+            <div class="col s10 offset-s1">
                 <form id="my_form" class="" method="post" enctype="multipart/form-data" action="validpic">
-                    <fieldset>
-                        <legend>Ajouter un article</legend>
+                  <div class="input-field col s5">
+                            <input type="text" class="" id="titre" name="title" placeholder="Tags of the pic">
 
-                        <div class="">
-                            <label for="titre" class="">Titre</label>
-                            <div class="">
-                                <input type="text" class="" id="titre" name="title" placeholder="Titre de l'article">
-                            </div>
-                        </div>
+                            <textarea class="materialize-textarea" rows="3" id="contenu" name="content" placeholder="Description of the article"></textarea>
 
-                        <div class="">
-                            <label for="contenu" class="">Contenu</label>
-                            <div class="">
-                                <textarea class="" rows="3" id="contenu" name="content" placeholder="Contenu de l'article"></textarea>
-                            </div>
-                        </div>
+                            <div class="chips chips-placeholder"><input type="chip" id="titre" name="tags"></div>
+                  </div>
+                  <div class="col s5 offset-s1" style="padding-top:5%;">
+                    <div class="file-field input-field">
+                      <div class="btn">
+                        <span>A pic !</span>
+                        <input type="file" name="image" accept="video/*,image/*">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" name="path_img">
+                      </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="contenu" class="">Illustration</label>
-                            <div class="col-lg-10">
-                                <input type="file" class="" name="image" accept="image/*">
-                            </div>
-                        </div>
+                    <div id="image_preview">
+                      <div class="thumbnail hiddendiv">
+                          <img src="" alt="">
+                      </div>
+                    </div>
 
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <div id="image_preview" class="2">
-                                <div class="thumbnail">
-                                    <img src="" alt="">
-                                    <div class="caption">
-                                        <h4></h4>
-                                        <p></p>
-                                        <p><button type="button" class="btn">Annuler</button></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="">
-                            <div class="">
-                                <button type="submit" class="btn" >Envoyer</button>
-                            </div>
-                        </div>
-                    </fieldset>
+
+                      <button id="button_closepreview" type="button" class="btn red hiddendiv"><i class="material-icons">repeat</i></button>
+
+
+                        <button id="button_sendpic" name="action" type="submit" class="btn waves-effect waves-light hiddendiv" >Envoyer<i class="material-icons right">send</i></button>
+
+                  </div>
                 </form>
-
-                <div id="result"><pre>Veuillez remplir le formulaire et cliquer sur "Envoyer".</pre></div>
             </div>
         </div>
-

@@ -15,7 +15,7 @@ $('.like').click(function(){
 
             })
             .fail(function(data){
-
+                console.log(data)
             })
 
     }else{
@@ -24,8 +24,8 @@ $('.like').click(function(){
             .done(function (data) {
 
             })
-            .fail(function(data){
-                console.log(data)
+            .fail(function(xhr, status, error){
+                console.log(status, error)
             })
     }
 

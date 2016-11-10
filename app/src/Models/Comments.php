@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: gl55
- * Date: 05/11/2016
- * Time: 13:44
+ * User: debian
+ * Date: 07/11/16
+ * Time: 16:38
  */
 
 namespace App\Models;
@@ -11,10 +11,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Follows extends Model
+class Comments extends Model
 {
-    protected $table = "follows";
-    protected $primaryKey ="id_user";
+
+    protected $table = "comments";
+    protected $primaryKey ="uniqid";
     public $incrementing = false;
     public $timestamps = false;
 }

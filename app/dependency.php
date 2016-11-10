@@ -90,7 +90,8 @@ $container['App\Controllers\UserController'] = function ($c) {
     );
 };
 
-$container['App\Controllers\Ajaxcontroller'] = function ($c) {
+$container['App\Controllers\AjaxController'] = function ($c) {
+
     return new App\Controllers\AjaxController(
         $c
     );

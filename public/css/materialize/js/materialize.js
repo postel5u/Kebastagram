@@ -7501,29 +7501,12 @@ $(function () {
             var file = files[0],
                 $image_preview = $('#image_preview');
 
-
-            var MAX_WIDTH = 460;
-            var MAX_HEIGHT = 300;
-            var width = file.width;
-            var height = file.height;
-
-            if (width > height) {
-              if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
-              }
-            } else {
-              if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
-              }
-            }
-
-            file.width = width+'px';
-            file.height = height+'px';
             // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
             $image_preview.find('.thumbnail').removeClass('hiddendiv');
+            $('#button_sendpic').removeClass('hiddendiv');
+            $('#button_closepreview').removeClass('hiddendiv');
             $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
+            $image_preview.find('img').attr('style', "max-width:300px;max-height:300px;");
             $image_preview.find('h4').html(file.name);
             $image_preview.find('.caption p:first').html(file.size +' bytes');
         }
@@ -7531,11 +7514,14 @@ $(function () {
     });
 
     // Bouton "Annuler" pour vider le champ d'upload
-    $('#image_preview').find('button[type="button"]').on('click', function (e) {
+    $('#button_closepreview').on('click', function (e) {
         e.preventDefault();
 
         $('#my_form').find('input[name="image"]').val('');
+        $('#my_form').find('input[name="path_img"]').val('');
         $('#image_preview').find('.thumbnail').addClass('hiddendiv');
+        $('#button_closepreview').addClass('hiddendiv');
+        $('#button_sendpic').addClass('hiddendiv');
     });
 });
 
@@ -7561,4 +7547,36 @@ $(function () {
             }
         });
     });
+
+    $('#profil').find('input[name="image"]').on('change', function (e) {
+        var files = $(this)[0].files;
+
+        if (files.length > 0) {
+            // On part du principe qu'il n'y qu'un seul fichier
+            // étant donné que l'on a pas renseigné l'attribut "multiple"
+            var file = files[0],
+                $last_pic = $('#last_profile_pic');
+                $new_pic = $('#new_profile_pic');
+
+            // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
+            $last_pic.addClass('hiddendiv');
+            $new_pic.removeClass('hiddendiv');
+            $new_pic.find('img').attr('src',window.URL.createObjectURL(file));
+            $new_pic.find('img').attr('style', "max-width:200px;max-height:200px;");
+        }
+        console.log(files);
+    });
 });
+
+$('.chips-placeholder').material_chip({
+    placeholder: 'Enter a tag',
+    secondaryPlaceholder: '+Tag',
+});
+
+var chip = {
+    tag: 'chip content',
+    image: '', //optional
+    id: 1, //optional
+  };
+
+$('.chips-initial').material_chip('data');
