@@ -55,6 +55,13 @@ $mw = function ($request, $response, $next) {
             elseif ((($d/3600)/24)/30 > 12) {
                 $pics->interval= "Il y a plus de ".intval(((($d/3600)/24)/30)/12) ." année(s)";
             }
+            if(sizeof(\Illuminate\Database\Capsule\Manager::select("select * from users_pictures where users_pictures.id_users='$u->uniqid' and users_pictures.id_pictures='$pics->id'"))== 1){
+                $pics->aime = true;
+            }else{
+                $pics->aime = false;
+            }
+
+
         }
         $this->view->render($response,'homepage_co.twig',['user'=>$u,'follows'=>$user_follow,'pictures'=>$p]);
     }else{
