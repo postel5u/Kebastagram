@@ -6,10 +6,10 @@
             <div class="col s12 m10  l6 offset-l3">
                 <div class="card-panel grey lighten-5 z-depth-1">
                     {% if bool_follow %}
-                        <button class="waves-effect waves-blue btn blue right btn_unfollow" id="unfollow_{{uniqid}}">Ne plus suivre</button>
+                        <a href="/unfollow/{{ uniqid }}" class="waves-effect waves-blue btn blue right ">Ne plus suivre</a>
 
                     {% else %}
-                        <button class="waves-effect waves-blue btn blue right btn_follow" id="follow_{{uniqid}}">Suivre</button>
+                        <a class="waves-effect waves-blue btn blue right btn_follow" href="/follow/{{uniqid}}">Suivre</a>
                     {% endif %}
                     <div class="row valign-wrapper">
                         <div class="col s4 m2">
