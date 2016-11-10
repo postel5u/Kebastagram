@@ -271,7 +271,7 @@ final class UserController
     public function editProfil(Request $request, Response $response, $args){
 
         $m = \App\Models\User::find($_SESSION['uniqid']);
-        
+
         $val = ['username'=>$m->username,
             'user'=>$m,
             'lastname' => $m->lastname,
@@ -445,7 +445,7 @@ final class UserController
 
       //die(var_dump($_FILES));
       $this->newpic();
-
+      var_dump($_POST);
       return $this->view->render($response,'hello.twig', array(   ));
     }
 

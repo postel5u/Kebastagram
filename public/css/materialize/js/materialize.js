@@ -7503,6 +7503,8 @@ $(function () {
 
             // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
             $image_preview.find('.thumbnail').removeClass('hiddendiv');
+            $('#button_sendpic').removeClass('hiddendiv');
+            $('#button_closepreview').removeClass('hiddendiv');
             $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
             $image_preview.find('img').attr('style', "max-width:300px;max-height:300px;");
             $image_preview.find('h4').html(file.name);
@@ -7512,11 +7514,14 @@ $(function () {
     });
 
     // Bouton "Annuler" pour vider le champ d'upload
-    $('#image_preview').find('button[type="button"]').on('click', function (e) {
+    $('#button_closepreview').on('click', function (e) {
         e.preventDefault();
 
         $('#my_form').find('input[name="image"]').val('');
+        $('#my_form').find('input[name="path_img"]').val('');
         $('#image_preview').find('.thumbnail').addClass('hiddendiv');
+        $('#button_closepreview').addClass('hiddendiv');
+        $('#button_sendpic').addClass('hiddendiv');
     });
 });
 
@@ -7562,3 +7567,16 @@ $(function () {
         console.log(files);
     });
 });
+
+$('.chips-placeholder').material_chip({
+    placeholder: 'Enter a tag',
+    secondaryPlaceholder: '+Tag',
+});
+
+var chip = {
+    tag: 'chip content',
+    image: '', //optional
+    id: 1, //optional
+  };
+
+$('.chips-initial').material_chip('data');
