@@ -18,4 +18,12 @@ class Pictures extends Model
     protected $primaryKey ="id";
     public $incrementing = false;
     public $timestamps = false;
+
+    public function user()
+
+    {
+        return $this->belongsToMany('App\Models\User','users_pictures','id_pictures','id_users');
+
+    }
 }
+

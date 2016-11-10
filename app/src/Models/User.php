@@ -10,4 +10,13 @@ class User extends Model
     protected $primaryKey ="uniqid";
     public $incrementing = false;
     public $timestamps = false;
+
+    public function pictures()
+
+    {
+
+        return $this->belongsToMany('App\Models\Pictures','users_pictures','id_pictures','id_users');
+
+    }
 }
+
