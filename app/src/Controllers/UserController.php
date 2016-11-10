@@ -142,20 +142,18 @@ final class UserController
     }
 
 
-    public function signup(Request $request, Response $response, $args){
+    public function signup(Request $request, Response $response, $args, $errors=null){
 
-        return $this->view->render($response,'signup.twig', array(   ));
+        return $this->view->render($response,'signup.twig', array('errors' => $errors));
     }
     public function addMember(Request $request, Response $response, $args) {
         if (isset($_POST['action']) && ($_POST['action'] == 'subInscription')) {
             if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['birthday']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username']) && isset($_POST['address']) && isset($_POST['codepostal']) && isset($_POST['city']) )  {
-                $this->addUser($_POST['name'], $_POST['firstname'], $_POST['birthday'], $_POST['email'],$_POST['password'], $_POST['username'],$_POST['address'], $_POST['codepostal'], $_POST['city'] );
-                return $response->withRedirect($this->router->pathFor('homepage'));
-
+                $this->addUser($_POST['name'], $_POST['firstname'], $_POST['birthday'], $_POST['email'],$_POST['password'], $_POST['username'],$_POST['address'], $_POST['codepostal'], $_POST['city'],$request, $response, $args );
             }
         }
     }
-    public function addUser($nom, $prenom, $dateNaiss, $email, $pass, $username, $adress, $codepostal, $city ){
+    public function addUser($nom, $prenom, $dateNaiss, $email, $pass, $username, $adress, $codepostal, $city, Request $request, Response $response, $args ){
         $m = new \App\Models\User();
 
         $errors = array ();
@@ -166,12 +164,15 @@ final class UserController
         if ($prenom != filter_var ( $prenom, FILTER_SANITIZE_STRING )) {
             array_push ( $errors, "Prenom invalide, merci de corriger" );
         }
+        if ($username != filter_var($username, FILTER_SANITIZE_STRING)){
+            array_push ( $errors, "Username invalide, merci de corriger" );
+        }
         if ($email != filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
             array_push ( $errors, "Adresse email invalide, merci de corriger" );
         } else {
-            $emailVerif = \App\Models\User::where ( 'email', $email )->get ();
+            $emailVerif = \App\Models\User::where ( 'email', $email )->orwhere('username', $username)->get ();
             if (sizeof ( $emailVerif ) != 0) {
-                array_push ( $errors, "Un compte a déjà été créé avec cette adresse email" );
+                array_push ( $errors, "Un compte a déjà été créé avec cette adresse email ou ce pseudo" );
             }
         }
         if ($adress != filter_var ( $adress, FILTER_SANITIZE_STRING )) {
@@ -182,11 +183,6 @@ final class UserController
         }
         if ($city != filter_var ( $city, FILTER_SANITIZE_STRING )) {
             array_push ( $errors, "Ville invalide, merci de corriger" );
-        }
-
-
-        if ($username != filter_var($username, FILTER_SANITIZE_STRING)){
-            array_push ( $errors, "Username invalide, merci de corriger" );
         }
         if ($pass != filter_var ( $pass, FILTER_SANITIZE_STRING )) {
             array_push ( $errors, "Mot de passe invalide, merci de corriger" );
@@ -205,14 +201,7 @@ final class UserController
                 'cost' => 12,
             ) );
 
-            $date = explode('/', $dateNaiss);
-            $dateFin = '';
-            $i = sizeof($date);
-            for($i; $i>0; $i--){
-                $dateFin .= "-" . $date[$i-1];
-            }
-            $dateFin = substr($dateFin, 1);
-
+            $dateFin = $this->modifDate($dateNaiss);
             $m->uniqid = uniqid();
             $m->lastname = $nom;
             $m->firstname = $prenom;
@@ -225,10 +214,56 @@ final class UserController
             $m->username = $username;
             $m->save ();
 
+            return $response->withRedirect($this->router->pathFor('homepage'));
+        }
+        else {
+            $this->signup($request, $response, $args, $errors);
+        }
+    }
+
+    private function modifDate($date) {
+        $jm = explode(' ', $date);
+        $m = explode(',', $jm[1]);
+        switch ($m[0]) {
+            case "January":
+                $m[0] = '01';
+                break;
+            case "February":
+                $m[0] = '02';
+                break;
+            case "March":
+                $m[0] = '03';
+                break;
+            case "April":
+                $m[0] = '04';
+                break;
+            case "May":
+                $m[0] = '05';
+                break;
+            case "June":
+                $m[0] = '06';
+                break;
+            case "July":
+                $m[0] = '07';
+                break;
+            case "August":
+                $m[0] = '08';
+                break;
+            case "September":
+                $m[0] = '09';
+                break;
+            case "October":
+                $m[0] = '10';
+                break;
+            case "November":
+                $m[0] = '11';
+                break;
+            case "December":
+                $m[0] = '12';
+                break;
 
         }
-
-
+        return "$jm[2]-$m[0]-$jm[0]";
     }
 
     public function profil(Request $request, Response $response, $args){
