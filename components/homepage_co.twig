@@ -26,8 +26,11 @@
                         {%  set tags = p.tag|split(',') %}
                         <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
                         </p>
-                        <i class="material-icons right" style="cursor: pointer;margin-top: 10px">thumb_up</i>
-
+                        {% if p.aime == true %}
+                        <i  id='{{ p.id }}' class="material-icons right like" style="cursor: pointer;margin-top: 10px">thumb_down</i>
+                        {%  else %}
+                        <i  id='{{ p.id }}' class="material-icons right like" style="cursor: pointer;margin-top: 10px">thumb_up</i>
+                        {%  endif %}
                         <p style="margin-top: 10px" class="left-align">{{ p.interval }}</p>
 
                     </div>
