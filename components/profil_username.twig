@@ -5,6 +5,12 @@
         <div class="container">
             <div class="col s12 m10  l6 offset-l3">
                 <div class="card-panel grey lighten-5 z-depth-1">
+                    {% if bool_follow %}
+                        <a href="/unfollow/{{ uniqid }}" class="waves-effect waves-blue btn blue right ">Ne plus suivre</a>
+
+                    {% else %}
+                        <a class="waves-effect waves-blue btn blue right btn_follow" href="/follow/{{uniqid}}">Suivre</a>
+                    {% endif %}
                     <div class="row valign-wrapper">
                         <div class="col s4 m2">
                             <img src="/{{ profil_picture }}" alt="" class="circle responsive-img valign">
@@ -60,7 +66,6 @@
         </div>
     </div>
 
-
     <!-- Modal Structure -->
     <div id="modal1" class="modal modal-fixed-footer">
         <div class="modal-content">
@@ -68,11 +73,12 @@
             <ul class="collection ">
                 {% for f in follow %}
                     <li class="collection-item avatar">
-                        <img src="/{{ f.profil_picture }}" alt="" class="circle">
-                        <span class="title">@{{ f.username }}</span>
+                        <a href="/profil/{{ f.username }}">
+                            <img src="/{{ f.profil_picture }}" alt="" class="circle">
+                            <span class="title">@{{ f.username }}</span></a>
                         <p>{{ f.firstname }} {{ f.lastname }}</p>
                         <p>{{ f.postal_code }} {{ f.city }}</p>
-                        <a href="/profil/{{ f.username }}" class="secondary-content"><i class="material-icons medium">send</i></a>
+                        <a href="/profil/{{ f.username }}" class="secondary-content"><i class="material-icons medium hide-on-small-and-down">send</i></a>
                     </li>
                 {% endfor %}
             </ul>
@@ -88,11 +94,11 @@
             <ul class="collection ">
                 {% for fo in follower %}
                     <li class="collection-item avatar">
-                        <img src="/{{ fo.profil_picture }}" alt="" class="circle">
-                        <span class="title">@{{ fo.username }}</span>
+                        <a href="/profil/{{ fo.username }}"><img src="/{{ fo.profil_picture }}" alt="" class="circle">
+                            <span class="title">@{{ fo.username }}</span></a>
                         <p>{{ fo.firstname }} {{ fo.lastname }}</p>
                         <p>{{ fo.postal_code }} {{ fo.city }}</p>
-                        <a href="/profil/{{ fo.username }}" class="secondary-content"><i class="material-icons medium">send</i></a>
+                        <a href="/profil/{{ fo.username }}" class="secondary-content"><i class="material-icons medium hide-on-small-and-down">send</i></a>
                     </li>
                 {% endfor %}
             </ul>

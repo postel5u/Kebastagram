@@ -13,6 +13,7 @@
 namespace App\Controllers;
 
 
+use App\Models\Follows;
 use App\Models\User;
 use App\Models\Pictures;
 use Illuminate\Contracts\Redis\Database;

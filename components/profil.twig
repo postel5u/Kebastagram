@@ -65,11 +65,12 @@
         <ul class="collection ">
             {% for f in follow %}
             <li class="collection-item avatar">
+                <a href="/profil/{{ f.username }}">
                 <img src="/{{ f.profil_picture }}" alt="" class="circle">
-                <span class="title">@{{ f.username }}</span>
+                <span class="title">@{{ f.username }}</span></a>
                 <p>{{ f.firstname }} {{ f.lastname }}</p>
                 <p>{{ f.postal_code }} {{ f.city }}</p>
-                <a href="/profil/{{ f.username }}" class="secondary-content"><i class="material-icons medium">send</i></a>
+                <a href="/profil/{{ f.username }}" class="secondary-content"><i class="material-icons medium hide-on-small-and-down">send</i></a>
             </li>
             {% endfor %}
         </ul>
@@ -85,11 +86,11 @@
         <ul class="collection ">
             {% for fo in follower %}
                 <li class="collection-item avatar">
-                    <img src="/{{ fo.profil_picture }}" alt="" class="circle">
-                    <span class="title">@{{ fo.username }}</span>
+                    <a href="/profil/{{ fo.username }}"><img src="/{{ fo.profil_picture }}" alt="" class="circle">
+                    <span class="title">@{{ fo.username }}</span></a>
                     <p>{{ fo.firstname }} {{ fo.lastname }}</p>
                     <p>{{ fo.postal_code }} {{ fo.city }}</p>
-                    <a href="/profil/{{ fo.username }}" class="secondary-content"><i class="material-icons medium">send</i></a>
+                    <a href="/profil/{{ fo.username }}" class="secondary-content"><i class="material-icons medium hide-on-small-and-down">send</i></a>
                 </li>
             {% endfor %}
         </ul>

@@ -329,6 +329,12 @@ final class UserController
                 $nb_pics = 0;
                 $follow = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user and follows.id_user_follow='$u->uniqid'");
                 $follower = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user_follow and follows.id_user='$u->uniqid'");
+                if (Follows::where('id_user',$u->uniqid)->where('id_user_follow',$_SESSION['uniqid'])->count() > 0){
+                    $bool_follow = true;
+                }else{
+                    $bool_follow = false;
+
+                }
                 foreach ($pics as $pic){
                     $nb_pics++;
                     $d = abs(strtotime($pic->date)-time());
@@ -351,7 +357,8 @@ final class UserController
                         $pic->interval= "Il y a plus de ".intval(((($d/3600)/24)/30)/12) ." année(s)";
                     }
                 }
-                $val = ['username'=>$u->username,
+                $val = ['uniqid'=>$u->uniqid,
+                    'username'=>$u->username,
                     'lastname' => $u->lastname,
                     'firstname'=> $u->firstname,
                     "profil_picture"=>$u->profil_picture,
@@ -361,7 +368,8 @@ final class UserController
                     'nb_pics'=>$nb_pics,
                     'follow'=>$follow,
                     'follower'=>$follower,
-                    'erreur'=>false
+                    'erreur'=>false,
+                    'bool_follow'=>$bool_follow
                 ];
                 return $this->view->render($response,'profil_username.twig', $val);
 
@@ -601,6 +609,29 @@ final class UserController
     public function logout(Request $request, Response $response, $args){
         unset($_SESSION['uniqid']);
         return $response->withRedirect($this->router->pathFor('homepage'));
+    }
+
+    function follow(Request $request, Response $response, $args) {
+        $u = $_SESSION['uniqid'];
+        $user_follow = $args['uniqid'];
+        $username = User::find($user_follow)->username;
+        $f = new Follows();
+        $f->id_user = $user_follow;
+        $f->id_user_follow = $u ;
+        $f->save();
+        $url = $this->router->pathFor('profil_username',['username'=>$username]);
+        return $response->withStatus(302)->withHeader('Location', $url);
+
+    }
+
+    function unfollow(Request $request, Response $response, $args) {
+        $u = $_SESSION['uniqid'];
+        $user_follow = $args['uniqid'];
+        $username = User::find($user_follow)->username;
+        Follows::where('id_user',$user_follow)->where('id_user_follow',$_SESSION['uniqid'])->delete();
+        $url = $this->router->pathFor('profil_username',['username'=>$username]);
+        return $response->withStatus(302)->withHeader('Location', $url);
+
     }
 
 

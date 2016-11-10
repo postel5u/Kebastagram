@@ -37,5 +37,7 @@ $app->get('/comments/{id}', 'App\Controllers\HomeController:comments');
 
 $app->get('/profil/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');
 
+$app->get('/follow/{uniqid}', 'App\Controllers\UserController:follow');
+$app->get('/unfollow/{uniqid}','App\Controllers\UserController:unfollow');
 
 
