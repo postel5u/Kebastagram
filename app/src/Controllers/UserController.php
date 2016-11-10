@@ -233,7 +233,28 @@ final class UserController
 
     public function profil(Request $request, Response $response, $args){
         $m = \App\Models\User::where("uniqid","=",$_SESSION['uniqid'])->first();
-        $pics = \App\Models\Pictures::where("user","=",$_SESSION['uniqid'])->get();
+        $pics = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$m->uniqid' ORDER BY date DESC ");
+        foreach ($pics as $pic){
+            $d = abs(strtotime($pic->date)-time());
+            if($d < 60){
+                $pic->interval= "Il y a ".intval($d)." secondes";
+            }
+            elseif ($d/60 < 60) {
+                $pic->interval= "Il y a ".intval($d/60)." minute(s)";
+            }
+            elseif ($d/3600 < 24) {
+                $pic->interval= "Il y a ".intval($d/3600)." heure(s)";
+            }
+            elseif (($d/3600)/24 < 30){
+                $pic->interval= "Il y a ".intval(($d/3600)/24)." jour(s)";
+            }
+            elseif ((($d/3600)/24)/30 < 12){
+                $pic->interval= "Il y a ".intval((($d/3600)/24)/30) ." mois";
+            }
+            elseif ((($d/3600)/24)/30 > 12) {
+                $pic->interval= "Il y a plus de ".intval(((($d/3600)/24)/30)/12) ." année(s)";
+            }
+        }
         $val = ['username'=>$m->username,
                     'lastname' => $m->lastname,
                     'firstname'=> $m->firstname,
@@ -291,7 +312,7 @@ final class UserController
             if ( in_array($extension_upload,$extensions_valides) ) {
               echo "Extension correcte";
               $n = $_FILES['image']['name'];
-              $n = $this->resize_image($n,300,300);
+
               $nom_pic = "pics/$n";
 
               $pic_r = $_FILES['image']['tmp_name'];
@@ -455,7 +476,9 @@ final class UserController
           $tag = "";
         }
         $pic_r = $_FILES['image']['tmp_name'];
+        var_dump($pic_r);
         $this->resize_image($pic_r,null,300,300);
+        var_dump($pic_r);
         $resultat = move_uploaded_file($pic_r,$nom);
         if ($resultat) {
           echo "Transfert réussi";
@@ -476,4 +499,10 @@ final class UserController
         return $response->withRedirect($this->router->pathFor('homepage'));
     }
 
+    public function profil_username(Request $request, Response $response, $args){
+        $u = User::where('username',$args["username"])->first();
+        $p = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$u->uniqid' ORDER BY date DESC ");
+
+        $this->view->render($response, 'profil_username.twig', array('username' => $args['username']));
+    }
 }

@@ -1,6 +1,24 @@
+<div class="container">
+    <div class="container">
+        <div class="col s12 m10  l6 offset-l3">
+            <div class="card-panel grey lighten-5 z-depth-1">
+                <div class="row valign-wrapper">
+                    <div class="col s4 m2">
+                        <img src="{{ profil_picture }}" alt="" class="circle responsive-img valign">
+                    </div>
+                    <div class="col s12 m10">
+                <span class="black-text"><h5>@{{ username }}</h5><p>{{ firstname }} {{ lastname }}</p></span>
+                    </div>
+                </div>
+                <div class="row valign-wrapper">
+                    <div class="col s12 m12">
+                        <div class="col s12 m4 l4 "><b><p class="center">Abonnements</p></b><p class="center">23</p></div>
+                        <div class="col s12 m4 l4 "><b><p class="center">Abonnés</p></b><p class="center">23</p></div>
+                        <div class="col s12 m4 l4 "><b><p class="center">Photos</p></b><p class="center">23</p></div>
 
-<div class="row">
-      <div class="col s4 offset-s1">
+
+<div class="row" style="padding-top:5%">
+      <div class="col s4 offset-s2">
         <h4>Profil de : {{ username }}</h4>
         <p> Nom : {{  lastname }}</p>
         <p> Prenom : {{  firstname }}</p>
@@ -8,31 +26,53 @@
         <p> adresse : {{ address }}</p>
         <p> email : {{ email }}</p>
       </div>
-      <div class="col s6 offset-s1">
+      <div class="col s5 offset-s1">
         <img src="{% if profil_picture == null %} image/profil.png {% else %} {{ profil_picture }} {% endif %}">
         <div class="row">
             <a class="btn waves-effect waves-light"  href="editprofil">éditer profil
                 <i class="material-icons right">send</i>
             </a>
-        </div>
-      </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ========== Same code ended ========== -->
+    </div>
+<div class="row">
       <div class="col s12">
       {% for pic in pictures %}
-      <div class="col s3 offset-s1">
-          <div class="card large">
-              <div class="card-image">
-                <img class="picture" src="{{ pic.link }}">
+          <div class="col m4 l4 s12">
+          <div class="card timeline-content">
+              <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="{{ pic.link }}">
               </div>
               <div class="card-content">
-                <p>{{ pic.description }}</p>
+                  <span class="card-title activator "><a class="grey-text text-darken-4" href="">{{ pic.firstname }} {{ pic.lastname }}</a></span>
+                  <p style="margin-top: -15px">@{{ pic.username }}</p>
+                  <br>
+                  <p class="truncate activator" style="cursor: pointer !important;">{{ pic.description }}</p>
+                  {%  set tags = pic.tag|split(',') %}
+                  <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
+                  </p>
+                  <i class="material-icons right" style="cursor: pointer;margin-top: 10px">thumb_up</i>
+
+                  <p style="margin-top: 10px" class="left-align">{{ pic.interval }}</p>
+
               </div>
-              <div class="card-action">
-                {%  set tags = pic.tag|split(',') %}
+              <div class="card-reveal">
+                  <span class="card-title grey-text text-darken-4">{{ pic.firstname }} {{ pic.lastname }}<i class="material-icons right">close</i></span>
+                  <p style="margin-top: -10px">@{{ pic.username }}</p>
+                  <p>{{ pic.description }}</p>
+                  {%  set tags = pic.tag|split(',') %}
                   <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
+
               </div>
           </div>
-      </div>
+          </div>
       {% endfor %}
       </div>
 </div>
+
+</div>
+
