@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Follows extends Model
 {
     protected $table = "follows";
-    protected $primaryKey ="id_user,id_user_follow";
+    protected $primaryKey ="id_user";
     public $incrementing = false;
     public $timestamps = false;
 }

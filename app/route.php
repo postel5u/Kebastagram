@@ -37,5 +37,7 @@ $app->get('/comments/{id}', 'App\Controllers\HomeController:comments');
 
 $app->get('/profil/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');
 
+$app->post('/follow', 'App\Controllers\AjaxController:follow');
+$app->post('/unfollow','App\Controllers\AjaxController:unfollow');
 
 

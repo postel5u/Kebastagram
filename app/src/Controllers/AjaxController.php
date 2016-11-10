@@ -13,6 +13,7 @@
 namespace App\Controllers;
 
 
+use App\Models\Follows;
 use App\Models\User;
 use App\Models\Pictures;
 use Illuminate\Contracts\Redis\Database;
@@ -98,5 +99,26 @@ final class AjaxController {
         $c->save();
 
         echo json_encode($c);
+    }
+
+    function follow(Request $request, Response $response, $args) {
+        $u = $_SESSION['uniqid'];
+        $user_follow = $_POST['id'];
+        $f = new Follows();
+        $f->id_user = $user_follow;
+        $f->id_user_follow = $u ;
+        $f->save();
+
+        echo json_encode("");
+
+    }
+
+    function unfollow(Request $request, Response $response, $args) {
+        $u = $_SESSION['uniqid'];
+        $user_follow = $_POST['id'];
+        Follows::where('id_user',$user_follow)->where('id_user_follow',$_SESSION['uniqid'])->delete();
+
+        echo json_encode("");
+
     }
 }
