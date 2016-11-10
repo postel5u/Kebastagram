@@ -7504,6 +7504,7 @@ $(function () {
             // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
             $image_preview.find('.thumbnail').removeClass('hiddendiv');
             $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
+            $image_preview.find('img').attr('style', "max-width:300px;max-height:300px;");
             $image_preview.find('h4').html(file.name);
             $image_preview.find('.caption p:first').html(file.size +' bytes');
         }
@@ -7540,5 +7541,24 @@ $(function () {
                  $('body').html(response.responseText);
             }
         });
+    });
+
+    $('#profil').find('input[name="image"]').on('change', function (e) {
+        var files = $(this)[0].files;
+
+        if (files.length > 0) {
+            // On part du principe qu'il n'y qu'un seul fichier
+            // étant donné que l'on a pas renseigné l'attribut "multiple"
+            var file = files[0],
+                $last_pic = $('#last_profile_pic');
+                $new_pic = $('#new_profile_pic');
+
+            // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
+            $last_pic.addClass('hiddendiv');
+            $new_pic.removeClass('hiddendiv');
+            $new_pic.find('img').attr('src',window.URL.createObjectURL(file));
+            $new_pic.find('img').attr('style', "max-width:200px;max-height:200px;");
+        }
+        console.log(files);
     });
 });

@@ -16,5 +16,6 @@ class Pictures extends Model
 {
     protected $table = "pictures";
     protected $primaryKey ="id";
+    public $incrementing = false;
     public $timestamps = false;
 }
