@@ -12,7 +12,7 @@
     <ul class="collection" style="width: 60%;  margin: auto; ">
     {% for u in users %}
     <li class="collection-item avatar">
-      <img src="images/bg_home.bmp" alt="" class="circle">
+      <img src="{{ u.profil_picture }}" alt="" class="circle">
       <span class="title">@{{ u.username }}</span>
       <p>{{ u.firstname }} {{ u.lastname }}</p>
       <p>{{ u.postal_code }} {{ u.city }}</p>

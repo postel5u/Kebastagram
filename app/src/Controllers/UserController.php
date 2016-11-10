@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Follows;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Arr;
@@ -269,7 +270,13 @@ final class UserController
     public function profil(Request $request, Response $response, $args){
         $m = \App\Models\User::where("uniqid","=",$_SESSION['uniqid'])->first();
         $pics = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$m->uniqid' ORDER BY date DESC ");
+        $nb_follower = Follows::where('id_user',$m->uniqid)->count();
+        $nb_follow = Follows::where('id_user_follow',$m->uniqid)->count();
+        $nb_pics = 0;
+        $follow = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user and follows.id_user_follow='$m->uniqid'");
+        $follower = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user_follow and follows.id_user='$m->uniqid'");
         foreach ($pics as $pic){
+            $nb_pics++;
             $d = abs(strtotime($pic->date)-time());
             if($d < 60){
                 $pic->interval= "Il y a ".intval($d)." secondes";
@@ -293,13 +300,75 @@ final class UserController
         $val = ['username'=>$m->username,
                     'lastname' => $m->lastname,
                     'firstname'=> $m->firstname,
-                    'date_of_birth'=>$m->date_of_birth,
-                    'address'=>$m->address,
                     "profil_picture"=>$m->profil_picture,
-                    'email'=>$m->email,
-                    'pictures'=>$pics
+                    'pictures'=>$pics,
+                    'nb_follow'=>$nb_follow,
+                    'nb_follower'=>$nb_follower,
+                    'nb_pics'=>$nb_pics,
+                    'follow'=>$follow,
+                    'follower'=>$follower
             ];
         return $this->view->render($response,'profil.twig', $val);
+    }
+
+    public function profil_username(Request $request, Response $response, $args){
+        $u = User::where('username',$args["username"])->get();
+
+        if ($u->isEmpty()){
+            $this->view->render($response, 'profil_username.twig', array('username' => $args['username'],'erreur'=>true));
+
+        }else {
+            $u = $u->first();
+            if ($u->uniqid == $_SESSION['uniqid']) {
+                return $response->withRedirect($this->router->pathFor('profil'));
+
+            } else {
+                $pics = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$u->uniqid' ORDER BY date DESC ");
+                $nb_follower = Follows::where('id_user',$u->uniqid)->count();
+                $nb_follow = Follows::where('id_user_follow',$u->uniqid)->count();
+                $nb_pics = 0;
+                $follow = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user and follows.id_user_follow='$u->uniqid'");
+                $follower = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user_follow and follows.id_user='$u->uniqid'");
+                foreach ($pics as $pic){
+                    $nb_pics++;
+                    $d = abs(strtotime($pic->date)-time());
+                    if($d < 60){
+                        $pic->interval= "Il y a ".intval($d)." secondes";
+                    }
+                    elseif ($d/60 < 60) {
+                        $pic->interval= "Il y a ".intval($d/60)." minute(s)";
+                    }
+                    elseif ($d/3600 < 24) {
+                        $pic->interval= "Il y a ".intval($d/3600)." heure(s)";
+                    }
+                    elseif (($d/3600)/24 < 30){
+                        $pic->interval= "Il y a ".intval(($d/3600)/24)." jour(s)";
+                    }
+                    elseif ((($d/3600)/24)/30 < 12){
+                        $pic->interval= "Il y a ".intval((($d/3600)/24)/30) ." mois";
+                    }
+                    elseif ((($d/3600)/24)/30 > 12) {
+                        $pic->interval= "Il y a plus de ".intval(((($d/3600)/24)/30)/12) ." année(s)";
+                    }
+                }
+                $val = ['username'=>$u->username,
+                    'lastname' => $u->lastname,
+                    'firstname'=> $u->firstname,
+                    "profil_picture"=>$u->profil_picture,
+                    'pictures'=>$pics,
+                    'nb_follow'=>$nb_follow,
+                    'nb_follower'=>$nb_follower,
+                    'nb_pics'=>$nb_pics,
+                    'follow'=>$follow,
+                    'follower'=>$follower,
+                    'erreur'=>false
+                ];
+                return $this->view->render($response,'profil_username.twig', $val);
+
+
+            }
+        }
+
     }
 
 
@@ -534,10 +603,5 @@ final class UserController
         return $response->withRedirect($this->router->pathFor('homepage'));
     }
 
-    public function profil_username(Request $request, Response $response, $args){
-        $u = User::where('username',$args["username"])->first();
-        $p = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$u->uniqid' ORDER BY date DESC ");
 
-        $this->view->render($response, 'profil_username.twig', array('username' => $args['username']));
-    }
 }
