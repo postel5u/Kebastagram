@@ -29,5 +29,7 @@ $app->get('/profil', 'App\Controllers\UserController:profil')->setName('profil')
 $app->get('/editprofil', 'App\Controllers\UserController:editProfil')->setName('editprofil') ;
 $app->post('/acceptEdit', 'App\Controllers\UserController:acceptEdit')->setName('acceptEdit') ;
 
+$app->post('/comments', 'App\Controllers\AjaxController:comment');
+$app->get('/comments/{id}', 'App\Controllers\HomeController:comments');
 
 $app->get('/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');

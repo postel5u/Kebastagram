@@ -269,6 +269,7 @@ final class UserController
 
 
     public function editProfil(Request $request, Response $response, $args){
+
         $m = \App\Models\User::where("uniqid","=",$_SESSION['uniqid'])->first();
         $val = ['username'=>$m->username,
             'user'=>$m,
