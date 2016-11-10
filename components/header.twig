@@ -18,31 +18,31 @@
 <body>
 
 <ul id="dropdown1" class="dropdown-content ">
-    <li><a href="profil" class="blue-text">Voir</a></li>
+    <li><a href="/profil" class="blue-text">Voir</a></li>
     <li class="divider blue"></li>
-    <li><a href="editprofil" class="blue-text">Editer</a></li>
+    <li><a href="/editprofil" class="blue-text">Editer</a></li>
     <li class="divider blue"></li>
-    <li><a href="logout" class="blue-text">Deconnexion</a></li>
+    <li><a href="/logout" class="blue-text">Deconnexion</a></li>
 </ul>
 
 <ul id="dropdown2" class="dropdown-content ">
-    <li><a href="profil" class="blue-text">Voir</a></li>
+    <li><a href="/profil" class="blue-text">Voir</a></li>
     <li class="divider blue"></li>
-    <li><a href="editprofil" class="blue-text">Editer</a></li>
+    <li><a href="/editprofil" class="blue-text">Editer</a></li>
     <li class="divider blue"></li>
-    <li><a href="logout" class="blue-text">Deconnexion</a></li>
+    <li><a href="/logout" class="blue-text">Deconnexion</a></li>
 </ul>
 
 
 <ul class="side-nav" id="mobile-demo">
-    <li><form action="search"  style="margin-right: 5px" class="center-align" method="get"><input type="text"  placeholder="Recherche #Tag ou @User" name="recherche" id="recherche"></form></li>
+    <li><form action="/search"  style="margin-right: 5px" class="center-align" method="get"><input type="text"  placeholder="Recherche #Tag ou @User" name="recherche" id="recherche"></form></li>
     {% if user is null %}
-        <li><a href="login">Connexion</a></li>
-        <li><a href="signup">Inscription</a></li>
+        <li><a href="/login">Connexion</a></li>
+        <li><a href="/signup">Inscription</a></li>
     {% else %}
 
         <li><a class="dropdown-button valign-wrapper" href="#!" data-activates="dropdown2"><img src="{{ user.profil_picture }}" alt="" class="circle responsive-img valign left user-picture" style="padding: 13px;" > @{{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
-        <li><a href="postpic"><i class="material-icons right">add</i>Ajouter une photo</a></li>
+        <li><a href="/postpic"><i class="material-icons right">add</i>Ajouter une photo</a></li>
     {% endif %}
 </ul>
 
@@ -52,14 +52,14 @@
         <a href="/" class="brand-logo">Kebabstagram</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
-            <li><form action="search"  style="margin-right: 5px" class="center-align" method="get"><input type="text"  placeholder="Recherche #Tag ou @User" name="recherche" id="recherche"></form></li>
+            <li><form action="/search"  style="margin-right: 5px" class="center-align" method="get"><input type="text"  placeholder="Recherche #Tag ou @User" name="recherche" id="recherche"></form></li>
             {% if user is null %}
-                <li><a href="login">Connexion</a></li>
-                <li><a href="signup">Inscription</a></li>
+                <li><a href="/login">Connexion</a></li>
+                <li><a href="/signup">Inscription</a></li>
             {% else %}
 
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><img src="{{ user.profil_picture }}" alt="" class="circle responsive-img valign left user-picture" style="padding: 13px;" > @{{ user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a href="postpic"><i class="material-icons right">add</i>Ajouter une photo</a></li>
+                <li><a href="/postpic"><i class="material-icons right">add</i>Ajouter une photo</a></li>
             {% endif %}
         </ul>
     </div>
