@@ -1,16 +1,23 @@
-<div class="row">
-    <img src="/{{ picture.link }}" alt="{{ picture.description }}" class="col s8 offset-s2"/>
-</div>
-<p class="center">@{{ picture.username }}</p>
-<p class="center">{{ picture.description }}</p>
-{%  set tags = picture.tag|split(',') %}
-<p class="center">{% for t in tags %} <a href="/search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}</p>
+<i class=" right material-icons modal-action modal-close">clear</i>
+<h4>Commentaires</h4>
 <hr>
-{% for c in comments %}
-    <div class="row card">
-        <img href="{{ c.profil_picture }}" alt="photo de profile" class="circle responsive-img">
-        <p>{{ c.firstname }} {{ c.lastname  }}</p>
-        <p>@{{ c.username }}</p>
-        <p>{{ c.comment }}</p>
-    </div>
-{% endfor %}
+<br>
+{% if comments|length > 0 %}
+<ul class="collection ">
+    {% for c in comments %}
+
+        <li class="collection-item avatar">
+            {% if c.id_user == user%}
+                <i class="material-icons right">delete</i>
+            {% endif %}
+            <a href="/profil/{{ c.username }}">
+                <img src="/{{ c.profil_picture }}" alt="" class="circle">
+                <span class="title">@{{ c.username }}</span></a>
+            <p>{{ c.comment }}</p>
+            <p class="right">Le 18/05/2909</p>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="center">Aucun commentaire pour le moment ...</p>
+{% endif %}

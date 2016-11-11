@@ -13,3 +13,4 @@ $('.postCommentaire').on("click", function(){
     else
         Materialize.toast('Ajoutez un commentaire !', 2000, 'rounded blue')
 });
+

@@ -55,8 +55,14 @@ final class HomeController
 
     public function comments(Request $request, Response $response, $args){
         $id = $args['id'];
-        $p = Manager::select("select * from users, pictures where users.uniqid = pictures.user and pictures.id='$id'");
         $c = Manager::select("select * from users, comments where users.uniqid = comments.id_user and comments.id_picture='$id'");
-        $this->view->render($response, 'comments.twig', array('picture' => $p[0], 'comments' => $c));
+        $this->view->render($response, 'comments.twig', array('comments' => $c,'user'=>$_SESSION['uniqid']));
+    }
+
+    public function likes(Request $request, Response $response, $args){
+        $id = $args['id'];
+        $like = \Illuminate\Database\Capsule\Manager::select("select * from users, users_pictures where users.uniqid = users_pictures.id_users and users_pictures.id_pictures='$id'");
+        $this->view->render($response, 'likes.twig', array('likes' => $like));
+
     }
 }

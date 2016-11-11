@@ -1,0 +1,19 @@
+<i class=" right material-icons modal-action modal-close">clear</i>
+<h4>Mentions j'aime</h4>
+<hr>
+<br>
+{% if likes|length > 0 %}
+<ul class="collection ">
+    {% for l in likes %}
+
+        <li class="collection-item avatar">
+            <a href="/profil/{{ l.username }}">
+            <img src="/{{ l.profil_picture }}" alt="" class="circle">
+            <span class="title">@{{ l.username }}</span></a>
+            <p>{{ l.firstname }} {{ l.lastname }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p class="center">Aucun j'aime pour le moment ...</p>
+{% endif %}
