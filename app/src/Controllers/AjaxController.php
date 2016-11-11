@@ -96,6 +96,7 @@ final class AjaxController {
         $c->id_user = $idu;
         $c->id_picture = $p;
         $c->comment = $comments;
+        $c->date = date("Y-m-d");
         $c->save();
 
         echo json_encode($c);
