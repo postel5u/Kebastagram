@@ -33,7 +33,9 @@ $app->post('/like','App\Controllers\AjaxController:like');
 $app->post('/unlike','App\Controllers\AjaxController:unlike');
 
 $app->post('/comments', 'App\Controllers\AjaxController:comment');
-$app->get('/comments/{id}', 'App\Controllers\HomeController:comments');
+$app->get('/show/comments/{id}', 'App\Controllers\HomeController:comments');
+$app->get('/show/likes/{id}', 'App\Controllers\HomeController:likes');
+
 
 $app->get('/profil/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');
 

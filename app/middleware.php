@@ -12,16 +12,21 @@ $app->add(function ($request, $response, $next) {
 
 
 $app->add(function ($request, $response, $next) {
-    if (isset($_SESSION['uniqid'])){
-        $u = User::where('uniqid',$_SESSION['uniqid'])->get()->first();
-        $this->view->render($response,'header.twig',['user'=>$u]);
-    }else{
-        $this->view->render($response,'header.twig');
-    }
-    $response = $next($request, $response);
-    $this->view->render($response,'footer.twig');
+    if (!(starts_with($request->getUri()->getPath(),'/show'))){
+        if (isset($_SESSION['uniqid'])){
+            $u = User::where('uniqid',$_SESSION['uniqid'])->get()->first();
+            $this->view->render($response,'header.twig',['user'=>$u]);
+        }else{
+            $this->view->render($response,'header.twig');
+        }
+        $response = $next($request, $response);
+        $this->view->render($response,'footer.twig');
 
-    return $response;
+        return $response;
+    }else{
+        $response = $next($request, $response);
+        return $response;
+    }
 });
 
 $mw = function ($request, $response, $next) {
@@ -59,8 +64,6 @@ $mw = function ($request, $response, $next) {
             }else{
                 $pics->aime = false;
             }
-            $c = \Illuminate\Database\Capsule\Manager::select("select * from users, comments where users.uniqid = comments.id_user and comments.id_picture='$pics->id'");
-            $pics->comments = $c;
         }
         $this->view->render($response,'homepage_co.twig',['user'=>$u,'pictures'=>$p]);
     }else{

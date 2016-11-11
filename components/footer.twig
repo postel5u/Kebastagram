@@ -3,7 +3,9 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="/css/materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="/css/materialize/js/materialize.js"></script>
+<script type="text/javascript" src="/JS/jquery.fancybox.js"></script>
 <script type="text/javascript" src="/JS/jquery.validate.js"></script>
+
 <script type="text/javascript" src="/JS/inscription.js"></script>
 <script type="text/javascript" src="/JS/like.js"></script>
 <script type="text/javascript" src="/JS/commentaire.js"></script>
@@ -17,7 +19,22 @@ selectYears: 90 // Creates a dropdown of 15 years to control year
     $(document).ready(function(){
         $('.parallax').parallax();
         $(".button-collapse").sideNav();
-        $('.modal-trigger').leanModal();
+        $('.comment_modal_trigger').click(function (e) {
+            e.preventDefault()
+            var id = this.id.substr(5);
+            $.get("/show/comments/"+id, function (data) {
+                $('#some_modal .modal-content').html(data);
+                $('#some_modal').openModal();
+            });
+        });
+        $('.like_modal_trigger').click(function (e) {
+            e.preventDefault()
+            var id = this.id.substr(5);
+            $.get("/show/likes/"+id, function (data) {
+                $('#like_modal .modal-content').html(data);
+                $('#like_modal').openModal();
+            });
+        });
     });</script>
 </body>
 </html>
