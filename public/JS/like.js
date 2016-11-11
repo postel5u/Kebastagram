@@ -17,6 +17,11 @@ $('.like').click(function(){
             .fail(function(data){
                 console.log(data)
             })
+        var id_tool = $('#'+id).attr('data-tooltip-id');
+        $('.tooltipped').tooltip('remove');
+        $('#'+id).attr('data-tooltip','Je n\'aime plus');
+        $('.tooltipped').tooltip({delay: 50});
+
 
     }else{
         $('#'+id).text('thumb_up');
@@ -27,8 +32,8 @@ $('.like').click(function(){
             .fail(function(xhr, status, error){
                 console.log(status, error)
             })
+        $('.tooltipped').tooltip('remove');
+        $('#'+id).attr('data-tooltip','J\'aime');
+        $('.tooltipped').tooltip({delay: 50});
     }
-
-
-
 });
