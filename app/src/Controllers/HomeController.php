@@ -56,6 +56,11 @@ final class HomeController
     public function comments(Request $request, Response $response, $args){
         $id = $args['id'];
         $c = Manager::select("select * from users, comments where users.uniqid = comments.id_user and comments.id_picture='$id'");
+        foreach ($c as $com){
+            $date = explode("-",$com->date);
+            $com->date = "$date[2]/$date[1]/$date[0]";
+
+        }
         $this->view->render($response, 'comments.twig', array('comments' => $c,'user'=>$_SESSION['uniqid']));
     }
 

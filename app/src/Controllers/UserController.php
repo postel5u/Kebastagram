@@ -557,7 +557,6 @@ final class UserController
 
       //die(var_dump($_FILES));
       $this->newpic();
-      var_dump($_POST);
       return $this->view->render($response,'hello.twig', array(   ));
     }
 

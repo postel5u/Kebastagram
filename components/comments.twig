@@ -8,13 +8,13 @@
 
         <li class="collection-item avatar">
             {% if c.id_user == user%}
-                <i class="material-icons right">delete</i>
+                <i class="material-icons right suppr_comment" id="suppr_comment_{{ c.uniqid }}" style="cursor: pointer">delete</i>
             {% endif %}
             <a href="/profil/{{ c.username }}">
                 <img src="/{{ c.profil_picture }}" alt="" class="circle">
                 <span class="title">@{{ c.username }}</span></a>
             <p>{{ c.comment }}</p>
-            <p class="right">Le 18/05/2909</p>
+            <p class="right">Le {{ c.date }}</p>
         </li>
     {% endfor %}
 </ul>
