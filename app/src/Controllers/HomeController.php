@@ -34,11 +34,10 @@ final class HomeController
     public function search(Request $request, Response $response, $args){
         if (isset($_GET['recherche']) && $_GET['recherche'] != ""){
             $r = $_GET['recherche'];
-            if (starts_with($r,"#")){
+            if (starts_with($r,"#")) {
                 $r = substr($r, 1);
                 $p = Pictures::where('tag','LIKE',"%".$r."%")->get();
                 $this->view->render($response, 'search.twig',array('recherche'=>$r,'pics'=>$p));
-
             }elseif (starts_with($r,"@")){
                 $r = substr($r, 1);
                 $u = User::where('username','LIKE',$r."%")->orWhere('firstname','LIKE',$r."%")->orWhere('lastname','LIKE',$r."%")->get();
