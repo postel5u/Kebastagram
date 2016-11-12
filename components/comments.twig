@@ -8,7 +8,7 @@
 
         <li class="collection-item avatar">
             {% if c.id_user == user%}
-                <i class="material-icons right suppr_comment" id="suppr_comment_{{ c.uniqid }}" style="cursor: pointer">delete</i>
+                <a href="/deletecom?id={{ c.uniqid }}"><i class="material-icons right "  style="cursor: pointer">delete</i></a>
             {% endif %}
             <a href="/profil/{{ c.username }}">
                 <img src="/{{ c.profil_picture }}" alt="" class="circle">
@@ -21,3 +21,4 @@
 {% else %}
 <p class="center">Aucun commentaire pour le moment ...</p>
 {% endif %}
+

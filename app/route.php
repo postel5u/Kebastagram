@@ -43,3 +43,6 @@ $app->get('/follow/{uniqid}', 'App\Controllers\UserController:follow');
 $app->get('/unfollow/{uniqid}','App\Controllers\UserController:unfollow');
 
 $app->get('/deletepic', 'App\Controllers\UserController:deletepic');
+
+$app->get('/deletecom', 'App\Controllers\UserController:deletecom');
+

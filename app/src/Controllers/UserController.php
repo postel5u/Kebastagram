@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Comments;
 use App\Models\Follows;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -636,5 +637,11 @@ final class UserController
     function deletepic(Request $request, Response $response, $args){
       \App\Models\Pictures::find($_GET['id'])->delete();
       return $this->view->render($response,'profil.twig', array(   ));
+    }
+
+    function deletecom (Request $request, Response $response, $args){
+        Comments::find($_GET['id'])->delete();
+        return $response->withRedirect($this->router->pathFor('homepage'));
+
     }
 }
