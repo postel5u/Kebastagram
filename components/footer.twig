@@ -25,8 +25,11 @@ selectYears: 90 // Creates a dropdown of 15 years to control year
             $.get("/show/comments/"+id, function (data) {
                 $('#some_modal .modal-content').html(data);
                 $('#some_modal').openModal();
+
+
             });
         });
+
         $('.like_modal_trigger').click(function (e) {
             e.preventDefault()
             var id = this.id.substr(5);
@@ -35,6 +38,16 @@ selectYears: 90 // Creates a dropdown of 15 years to control year
                 $('#like_modal').openModal();
             });
         });
+
+        $(".confirm").click(function (e) {
+            e.preventDefault()
+            $('#some_modal').closeModal();
+            showModal(this,'md1')
+        })
+        function showModal(but, modal){
+            $('#' + modal).openModal();
+            $('#' + modal + '_YesBtn').click(function(){ $('#' + modal).closeModal(); document.location = but.href; });
+        }
     });</script>
 </body>
 </html>
