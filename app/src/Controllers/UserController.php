@@ -636,7 +636,7 @@ final class UserController
 
     function deletepic(Request $request, Response $response, $args){
       \App\Models\Pictures::find($_GET['id'])->delete();
-      return $this->view->render($response,'hello.twig', array(   ));
+      return $this->view->render($response,'profil.twig', array(   ));
     }
 
     function deletecom (Request $request, Response $response, $args){
