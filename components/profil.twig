@@ -38,7 +38,7 @@
                   <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
                   </p>
                   <i class="material-icons right" style="cursor: pointer;margin-top: 10px">thumb_up</i>
-
+                  <a href="/deletepic?id={{pic.id}}" onclick="confirm('Voulez vous supprimer cette photo ?');"><i class="material-icons right" style="cursor: pointer;margin-top: 10px">delete</i></a>
                   <p style="margin-top: 10px" class="left-align">{{ pic.interval }}</p>
 
               </div>
