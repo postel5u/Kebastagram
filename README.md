@@ -1,9 +1,9 @@
 
-Projet KebabStagram
-    POSTEL Romain
-    PEREIRA Alexandre
-    LAUNAY Guillaume
-    PIERRE Alexandre  
+###Projet KebabStagram
+- LAUNAY Guillaume
+- PEREIRA Alexandre
+- PIERRE Alexandre
+- POSTEL Romain 
 
   
 ###Requirements:
