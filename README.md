@@ -1,7 +1,7 @@
 
 ###Projet KebabStagram
 
-Social network based on kébab for IT Licences, using Slim, Eloquent and Twig
+Social network based on kébab for IT Licences, using Composer, Slim Framework, Eloquent ORM and Twig
 
 
 # Table of content
