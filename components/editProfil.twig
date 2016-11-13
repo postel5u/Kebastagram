@@ -1,6 +1,11 @@
+{% if erreur is defined %}
+<p class="center red-text">{{ erreur }}</p>
+{% endif %}
 
+{% if succes is defined %}
+    <p class="center green-text">Modification réussi</p>
+{% endif %}
 <div class="row" style="padding-top:5%">
-
 
         <form id="profil" method="post" action="acceptEdit" enctype="multipart/form-data">
           <div class="col s3 offset-s2">
@@ -14,7 +19,7 @@
             <label> Ville : </label> <input type="text" name="city" value="{{ city }} " placeholder="{{ city }}"/>
             <label> email : </label> <input type="text" name="email" value="{{ email }}" placeholder="{{ email }}"/>
             <div class="row">
-                <label>Mot de  passe actuel : </label><input type="password" name="password"/>
+                <label>Mot de  passe actuel : </label><input required="" type="password" name="password"/>
                 <button class="btn waves-effect waves-light" type="submit"  >Valider les changements
                     <i class="material-icons right">send</i>
                 </button>

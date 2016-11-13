@@ -1,10 +1,6 @@
-{%  if erreur is defined %}
-    <p class="red-text">Rechercher seulement avec un "#" ou un "@"</p>
-{% else %}
-{%  endif  %}
 {% if users is defined %}
     {% if users|length == 0 %}
-    <p>Je n'ai rien trouvé pour @{{ recherche }} ...</p>
+    <h4 class="center">Je n'ai rien trouvé pour @{{ recherche }} ...</h4>
 {% else %}
     <br>
     <h4 class="center">Resultat pour @{{ recherche }} : </h4>
@@ -21,10 +17,10 @@
  {% endfor %}
     </ul>
     {% endif %}
-
-{% elseif pics is defined %}
+{% endif %}
+{% if pics is defined %}
     {% if pics|length == 0 %}
-        <p>Je n'ai rien trouvé #{{ recherche }} ...</p>
+        <h4 class="center">Je n'ai rien trouvé #{{ recherche }} ...</h4>
     {% else %}
         <h4 class="center">Resultat pour #{{ recherche }} : </h4>
         <div class="container">

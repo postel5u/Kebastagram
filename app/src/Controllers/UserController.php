@@ -440,31 +440,34 @@ final class UserController
             $dateNaiss = $_POST["date_of_birth"];
             $postal_code = $_POST["postal_code"];
             $nom_pic = $_POST["image"];
+            if ($_FILES['image']['name'] != "") {
+                $extensions_valides = array('jpg', 'jpeg', 'gif', 'png');
+                $extension_upload = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
+                if (in_array($extension_upload, $extensions_valides)) {
+                    if ($_FILES['image']['size'] <= 67108864) {
+                        $n = $_FILES['image']['name'];
 
-            $data['file'] = $_FILES;
+                        $nom_pic = "pics/$n";
 
-            //echo json_encode($data);
+                        $pic_r = $_FILES['image']['tmp_name'];
+                        $this->resize_image($pic_r, null, 200, 200);
+                        $resultat = move_uploaded_file($pic_r, $nom_pic);
 
-            $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
-            $extension_upload = strtolower(  substr(  strrchr($_FILES['image']['name'], '.')  ,1)  );
-            if ( in_array($extension_upload,$extensions_valides) ) {
-              echo "Extension correcte";
-              $n = $_FILES['image']['name'];
+                        if ($resultat) {
 
-              $nom_pic = "pics/$n";
+                        } else {
+                            return $this->view->render($response, 'editProfil.twig', ['erreur' => 'Erreur lors de l\'envoye du fichier, merci de recommencer.', 'username' => $m->username, 'user' => $m, 'lastname' => $m->lastname, 'firstname' => $m->firstname, 'date_of_birth' => $m->date_of_birth, 'address' => $m->address, 'email' => $m->email, 'password' => $m->password, "city" => $m->city, "postal_code" => $m->postal_code, "profil_picture" => $m->profil_picture]);
+                        }
+                    } else {
+                        return $this->view->render($response, 'editProfil.twig', ['erreur' => 'Poids du fichier trop important.', 'username' => $m->username, 'user' => $m, 'lastname' => $m->lastname, 'firstname' => $m->firstname, 'date_of_birth' => $m->date_of_birth, 'address' => $m->address, 'email' => $m->email, 'password' => $m->password, "city" => $m->city, "postal_code" => $m->postal_code, "profil_picture" => $m->profil_picture]);
 
-              $pic_r = $_FILES['image']['tmp_name'];
-              $this->resize_image($pic_r,null,200,200);
-              $resultat = move_uploaded_file($pic_r,$nom_pic);
+                    }
+                } else {
+                    return $this->view->render($response, 'editProfil.twig', ['erreur' => 'Format de fichier non pris en compte, utiliser un .jpg .png ou .gif.', 'username' => $m->username, 'user' => $m, 'lastname' => $m->lastname, 'firstname' => $m->firstname, 'date_of_birth' => $m->date_of_birth, 'address' => $m->address, 'email' => $m->email, 'password' => $m->password, "city" => $m->city, "postal_code" => $m->postal_code, "profil_picture" => $m->profil_picture]);
 
-              if ($resultat) {
-                echo "Transfert réussi";
-
-              }else{
-                $nom_pic = "image/profil.png";
-              }
+                }
             }
-
+            $errors = [];
             if ($nom != filter_var($nom, FILTER_SANITIZE_STRING)) {
                 array_push($errors, "Nom invalide, merci de corriger");
             }
@@ -475,7 +478,7 @@ final class UserController
                 array_push($errors, "Adresse email invalide, merci de corriger");
             } else {
                 $emailVerif = \App\Models\User::where('email', $email)->get();
-                if (sizeof($emailVerif) != 0) {
+                if (sizeof($emailVerif) != 0 && $emailVerif->first()->email != $m->email) {
                     array_push($errors, "Un compte a déjà été créé avec cette adresse email");
                 }
             }
@@ -509,7 +512,9 @@ final class UserController
             }
             $dateFin = substr($dateFin, 1);
 
-
+            if (sizeof($errors) > 0){
+                return $this->view->render($response, 'editProfil.twig', ['erreur'=>$errors[0], 'username'=>$m->username, 'user'=>$m, 'lastname' => $m->lastname, 'firstname'=> $m->firstname, 'date_of_birth'=>$m->date_of_birth, 'address'=>$m->address, 'email'=>$m->email, 'password'=>$m->password, "city"=>$m->city, "postal_code"=>$m->postal_code, "profil_picture"=>$m->profil_picture]);
+            }
             $m->lastname = $nom;
             $m->firstname = $prenom;
             $m->date_of_birth = $dateFin;
@@ -532,14 +537,13 @@ final class UserController
                 "city" => $m->city,
                 "postal_code" => $m->postal_code,
                 "profil_picture"=>$m->profil_picture,
-                'salt' => $m->salt
+                'succes'=>true
             ];
-            return $this->view->render($response, 'profil.twig', $val);
+            return $this->view->render($response, 'editProfil.twig', $val);
 
         } else {
-            echo "failed";
-            echo $_POST["image"];
-            echo $m->password;
+            return $this->view->render($response, 'editProfil.twig', ['erreur'=>'Mot de passe incorrect', 'username'=>$m->username, 'user'=>$m, 'lastname' => $m->lastname, 'firstname'=> $m->firstname, 'date_of_birth'=>$m->date_of_birth, 'address'=>$m->address, 'email'=>$m->email, 'password'=>$m->password, "city"=>$m->city, "postal_code"=>$m->postal_code, "profil_picture"=>$m->profil_picture]);
+
         }
     }
 
@@ -649,7 +653,7 @@ final class UserController
                         $pic->tag = $tag;
                         $pic->date = date("Y-m-d H:i:s");
                         $pic->save();
-                        return $response->withRedirect($this->router->pathFor('homepage'));
+                        return $response->withRedirect($this->router->pathFor('profil'));
                     }else{
                         return $this->view->render($response, 'add.twig',['erreur'=>'Erreur lors de l\'ajout de la photo, merci de recommencer.']);
 

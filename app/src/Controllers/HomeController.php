@@ -49,8 +49,9 @@ final class HomeController
                 $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u));
 
             }else{
-                $error ="Rechercher un utilisateur avec @ ou un tag avec #";
-                $this->view->render($response, 'search.twig',array('erreur'=>$error));
+                $p = Pictures::where('tag','LIKE',"%".$r."%")->get();
+                $u = User::where('username','LIKE',$r."%")->orWhere('firstname','LIKE',$r."%")->orWhere('lastname','LIKE',$r."%")->get();
+                $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u,'pics'=>$p));
 
             }
         }else{
