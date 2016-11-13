@@ -34,7 +34,7 @@ Import kebastagram.sql in `BDD`, in your Database
 
 Run Server  `php -S localhost:8000 -t public` in the root of the project
 
-and go to https://localhost:8000
+and go enjoy on Kebabstagram
 
 ###Features
 
