@@ -8,7 +8,7 @@ Social network based on kébab for IT Licences, using Slim, Eloquent and Twig
 
 - [Requirements](#requirements)
 - [Install](#install)
-- [Features](#contents)
+- [Features](#features)
 - [Login user test](#login-user-test)
 - [Creators](#creators)
 - [Licence](#licence)
@@ -54,7 +54,7 @@ To test all features quickly we have include a user with pics already post, comm
 Username : Alex
 Pass : Passalex1
 
-###Creator
+###Creators
 
 - LAUNAY Guillaume https://github.com/launay12u
 - PEREIRA Alexendre https://github.com/NickMyName
