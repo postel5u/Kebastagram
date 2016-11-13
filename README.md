@@ -39,14 +39,14 @@ and go to https://localhost:8000
 
 ###Features
 
--Sign in / Log in
--Follow /Unfollow
--Comments / Delete our comments
--Like / Unlike
--Search (tag with #, user with @ or both without prefix)
--Timeline
--Profil
--Post pics / Delete our pics
+- Sign in / Log in
+- Follow /Unfollow
+- Comments / Delete our comments
+- Like / Unlike
+- Search (tag with #, user with @ or both without prefix)
+- Timeline
+- Profil
+- Post pics / Delete our pics
 
 ###Login user test
 
