@@ -33,6 +33,6 @@ $ php -S localhost:8000 -t public
 
 #####5 Login
 User test :
-username : ??
-password : ??
+- username : ??
+- password : ??
 
