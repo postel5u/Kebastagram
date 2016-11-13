@@ -19,10 +19,6 @@ $app->get('/search', 'App\Controllers\HomeController:search')->setName('search')
 
 $app->post('/signup', 'App\Controllers\UserController:addMember');
 
-$app->get('/postpic', 'App\Controllers\UserController:postpic')->setName('postpic');
-
-$app->post('/validpic', 'App\Controllers\UserController:thepic')->setName("validpic");
-
 $app->get('/about', 'App\Controllers\HomeController:about')->setName('about');
 
 $app->get('/profil', 'App\Controllers\UserController:profil')->setName('profil');
@@ -46,3 +42,6 @@ $app->get('/deletepic', 'App\Controllers\UserController:deletepic');
 
 $app->get('/deletecom', 'App\Controllers\UserController:deletecom');
 
+$app->get('/add','App\Controllers\UserController:add')->setName('add');
+
+$app->post('/add','App\Controllers\UserController:add_post')->setName('add');

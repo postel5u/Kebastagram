@@ -1,0 +1,35 @@
+{% if erreur is defined %}
+    <div class="row red-text center">
+        <p>{{ erreur }}</p>
+    </div>
+{% endif %}
+<div class="container " style="padding-top:5%;">
+        <form class="col s6 offset-l3"  method="post" enctype="multipart/form-data" >
+            <div class="input-field col s8">
+
+                <textarea required="" class="materialize-textarea" rows="3" id="contenu" name="content" placeholder="Description"></textarea>
+                <input required="" type="text" class="" id="titre" name="title" placeholder="Tags (séparé par des virgules)">
+            </div>
+            <div class="col s6 " style="padding-top:5%;">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>A pic !</span>
+                        <input type="file" name="image" accept="video/*,image/*">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input required="" class="file-path validate" type="text" name="path_img">
+                    </div>
+                </div>
+
+                <div id="image_preview" style="text-align: center !important;">
+                    <div class="thumbnail hiddendiv">
+                        <img src="" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col s6" style="text-align: center !important;"><button id="button_closepreview" type="button" class="btn red hiddendiv"><i class="material-icons">repeat</i></button>
+
+
+                <button  name="action" type="submit" class="btn waves-effect waves-light " >Envoyer<i class="material-icons right">send</i></button></div>
+        </form>
+</div>

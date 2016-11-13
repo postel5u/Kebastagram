@@ -151,75 +151,88 @@ final class UserController
     public function addMember(Request $request, Response $response, $args) {
         if (isset($_POST['action']) && ($_POST['action'] == 'subInscription')) {
             if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['birthday']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username']) && isset($_POST['address']) && isset($_POST['codepostal']) && isset($_POST['city']) )  {
-                $this->addUser($_POST['name'], $_POST['firstname'], $_POST['birthday'], $_POST['email'],$_POST['password'], $_POST['username'],$_POST['address'], $_POST['codepostal'], $_POST['city'],$request, $response, $args );
+
+                $nom = $_POST['name'];
+                $prenom = $_POST['firstname'];
+                $dateNaiss = $_POST['birthday'];
+                $username =  $_POST['username'];
+                $email = $_POST['email'];
+                $adress = $_POST['address'];
+                $pass = $_POST['password'];
+                $city = $_POST['city'];
+                $codepostal = $_POST['codepostal'];
+
+                $errors = array ();
+
+                if ($nom != filter_var ( $nom, FILTER_SANITIZE_STRING )) {
+                    array_push ( $errors, "Nom invalide, merci de corriger" );
+                }
+                if ($prenom != filter_var ( $prenom, FILTER_SANITIZE_STRING )) {
+                    array_push ( $errors, "Prenom invalide, merci de corriger" );
+                }
+                if ($username != filter_var($username, FILTER_SANITIZE_STRING)){
+                    array_push ( $errors, "Username invalide, merci de corriger" );
+                }
+                if ($email != filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
+                    array_push ( $errors, "Adresse email invalide, merci de corriger" );
+                } else {
+                    $emailVerif = \App\Models\User::where ( 'email', $email )->orwhere('username', $username)->get ();
+                    if (sizeof ( $emailVerif ) != 0) {
+                        array_push ( $errors, "Un compte a déjà été créé avec cette adresse email ou ce pseudo" );
+                    }
+                }
+                if ($adress != filter_var ( $adress, FILTER_SANITIZE_STRING )) {
+                    array_push ( $errors, "Adresse invalide, merci de corriger" );
+                }
+                if ($codepostal != filter_var ( $codepostal, FILTER_SANITIZE_STRING )) {
+                    array_push ( $errors, "Code postal invalide, merci de corriger" );
+                }
+                if ($city != filter_var ( $city, FILTER_SANITIZE_STRING )) {
+                    array_push ( $errors, "Ville invalide, merci de corriger" );
+                }
+                if ($pass != filter_var ( $pass, FILTER_SANITIZE_STRING )) {
+                    array_push ( $errors, "Mot de passe invalide, merci de corriger" );
+                }
+
+
+                if (sizeof ( $errors ) == 0) {
+                    $nom = filter_var ( $nom, FILTER_SANITIZE_STRING );
+                    $prenom = filter_var ( $prenom, FILTER_SANITIZE_STRING );
+                    $email = filter_var ( $email, FILTER_SANITIZE_EMAIL );
+                    $adress = filter_var($adress, FILTER_SANITIZE_STRING );
+                    $codepostal = filter_var($codepostal, FILTER_SANITIZE_STRING );
+                    $city = filter_var($city, FILTER_SANITIZE_STRING );
+                    $username = filter_var($username, FILTER_SANITIZE_STRING );
+                    $pass = password_hash ( $pass, PASSWORD_DEFAULT, array (
+                        'cost' => 12,
+                    ) );
+                    $m = new \App\Models\User();
+                    $dateFin = $this->modifDate($dateNaiss);
+                    $m->uniqid = uniqid();
+                    $m->lastname = $nom;
+                    $m->firstname = $prenom;
+                    $m->date_of_birth = $dateFin;
+                    $m->email = $email;
+                    $m->address = $adress;
+                    $m->postal_code = $codepostal;
+                    $m->city = $city;
+                    $m->password = $pass;
+                    $m->username = $username;
+                    $m->save ();
+                    return $response->withRedirect($this->router->pathFor('homepage'));
+
+                }
+                else {
+                    return $this->view->render($response,'signup.twig', array('errors' => $errors));
+
+                }
+            }else{
+                return $response->withRedirect($this->router->pathFor('homepage'));
+
             }
-        }
-    }
-    public function addUser($nom, $prenom, $dateNaiss, $email, $pass, $username, $adress, $codepostal, $city, Request $request, Response $response, $args ){
-        $m = new \App\Models\User();
-
-        $errors = array ();
-
-        if ($nom != filter_var ( $nom, FILTER_SANITIZE_STRING )) {
-            array_push ( $errors, "Nom invalide, merci de corriger" );
-        }
-        if ($prenom != filter_var ( $prenom, FILTER_SANITIZE_STRING )) {
-            array_push ( $errors, "Prenom invalide, merci de corriger" );
-        }
-        if ($username != filter_var($username, FILTER_SANITIZE_STRING)){
-            array_push ( $errors, "Username invalide, merci de corriger" );
-        }
-        if ($email != filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
-            array_push ( $errors, "Adresse email invalide, merci de corriger" );
-        } else {
-            $emailVerif = \App\Models\User::where ( 'email', $email )->orwhere('username', $username)->get ();
-            if (sizeof ( $emailVerif ) != 0) {
-                array_push ( $errors, "Un compte a déjà été créé avec cette adresse email ou ce pseudo" );
-            }
-        }
-        if ($adress != filter_var ( $adress, FILTER_SANITIZE_STRING )) {
-            array_push ( $errors, "Adresse invalide, merci de corriger" );
-        }
-        if ($codepostal != filter_var ( $codepostal, FILTER_SANITIZE_STRING )) {
-            array_push ( $errors, "Code postal invalide, merci de corriger" );
-        }
-        if ($city != filter_var ( $city, FILTER_SANITIZE_STRING )) {
-            array_push ( $errors, "Ville invalide, merci de corriger" );
-        }
-        if ($pass != filter_var ( $pass, FILTER_SANITIZE_STRING )) {
-            array_push ( $errors, "Mot de passe invalide, merci de corriger" );
-        }
-
-
-        if (sizeof ( $errors ) == 0) {
-            $nom = filter_var ( $nom, FILTER_SANITIZE_STRING );
-            $prenom = filter_var ( $prenom, FILTER_SANITIZE_STRING );
-            $email = filter_var ( $email, FILTER_SANITIZE_EMAIL );
-            $adress = filter_var($adress, FILTER_SANITIZE_STRING );
-            $codepostal = filter_var($codepostal, FILTER_SANITIZE_STRING );
-            $city = filter_var($city, FILTER_SANITIZE_STRING );
-            $username = filter_var($username, FILTER_SANITIZE_STRING );
-            $pass = password_hash ( $pass, PASSWORD_DEFAULT, array (
-                'cost' => 12,
-            ) );
-
-            $dateFin = $this->modifDate($dateNaiss);
-            $m->uniqid = uniqid();
-            $m->lastname = $nom;
-            $m->firstname = $prenom;
-            $m->date_of_birth = $dateFin;
-            $m->email = $email;
-            $m->address = $adress;
-            $m->postal_code = $codepostal;
-            $m->city = $city;
-            $m->password = $pass;
-            $m->username = $username;
-            $m->save ();
-
+        }else{
             return $response->withRedirect($this->router->pathFor('homepage'));
-        }
-        else {
-            $this->signup($request, $response, $args, $errors);
+
         }
     }
 
@@ -269,6 +282,9 @@ final class UserController
     }
 
     public function profil(Request $request, Response $response, $args){
+        if (!isset($_SESSION['uniqid']))
+            return $response->withRedirect($this->router->pathFor('homepage'));
+
         $m = \App\Models\User::where("uniqid","=",$_SESSION['uniqid'])->first();
         $pics = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$m->uniqid' ORDER BY date DESC ");
         $nb_follower = Follows::where('id_user',$m->uniqid)->count();
@@ -550,62 +566,6 @@ final class UserController
         }
     }
 
-    public function postpic(Request $request, Response $response, $args){
-      return $this->view->render($response,'thepic.twig', array(   ));
-    }
-
-    public function thepic(Request $request, Response $response, $args){
-
-      //die(var_dump($_FILES));
-      $this->newpic();
-      return $this->view->render($response,'hello.twig', array(   ));
-    }
-
-    public function newpic(){
-      //var_dump($_FILES);
-      $data['file'] = $_FILES;
-      $data['text'] = $_POST;
-
-      echo json_encode($data);
-
-      $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
-      $extension_upload = strtolower(  substr(  strrchr($_FILES['image']['name'], '.')  ,1)  );
-      if ( in_array($extension_upload,$extensions_valides) ) {
-        echo "Extension correcte";
-        $n = $_FILES['image']['name'];
-        $nom = "pics/$n";
-        $id = uniqid();
-        $user = $_SESSION['uniqid'];
-        if (isset($_POST['content'])){
-          $description = $_POST['content'];
-        }else{
-          $description = "L\'utilisateur n'a fourni aucune description.";
-        }
-
-        if (isset($_POST['title'])){
-          $tag = $_POST['title'];
-        }else{
-          $tag = "";
-        }
-        $pic_r = $_FILES['image']['tmp_name'];
-        var_dump($pic_r);
-        $this->resize_image($pic_r,null,300,300);
-        var_dump($pic_r);
-        $resultat = move_uploaded_file($pic_r,$nom);
-        if ($resultat) {
-          echo "Transfert réussi";
-          $pic = new \App\Models\Pictures();
-          $pic->id = $id;
-          $pic->link = $nom;
-          $pic->description = $description;
-          $pic->user = $user;
-          $pic->tag = $tag;
-          $pic->date = date("Y-m-d H:i:s");
-          $pic->save();
-        }
-      }
-    }
-
     public function logout(Request $request, Response $response, $args){
         unset($_SESSION['uniqid']);
         return $response->withRedirect($this->router->pathFor('homepage'));
@@ -642,6 +602,61 @@ final class UserController
     function deletecom (Request $request, Response $response, $args){
         Comments::find($_GET['id'])->delete();
         return $response->withRedirect($this->router->pathFor('homepage'));
+
+    }
+
+    function add(Request $request, Response $response, $args){
+        if (!isset($_SESSION['uniqid']))
+            return $response->withRedirect($this->router->pathFor('homepage'));
+
+        return $this->view->render($response, 'add.twig');
+
+    }
+
+    function add_post (Request $request, Response $response, $args){
+
+        if (isset($_POST['action'])&& $_POST['action']=='send'){
+            $data['file'] = $_FILES;
+            $data['text'] = $_POST;
+            $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+            $extension_upload = strtolower(  substr(  strrchr($_FILES['image']['name'], '.')  ,1)  );
+            if ( in_array($extension_upload,$extensions_valides) ) {
+                if($_FILES['image']['size'] <= 67108864){
+                    $n = $_FILES['image']['name'];
+                    $nom = "pics/$n";
+                    $id = uniqid();
+                    $user = $_SESSION['uniqid'];
+                    $description = $_POST['content'];
+                    $tag = $_POST['title'];
+                    $pic_r = $_FILES['image']['tmp_name'];
+                    $this->resize_image($pic_r,null,300,300);
+                    $resultat = move_uploaded_file($pic_r,$nom);
+                    if ($resultat) {
+                        $pic = new \App\Models\Pictures();
+                        $pic->id = $id;
+                        $pic->link = $nom;
+                        $pic->description = $description;
+                        $pic->user = $user;
+                        $pic->tag = $tag;
+                        $pic->date = date("Y-m-d H:i:s");
+                        $pic->save();
+                        return $response->withRedirect($this->router->pathFor('homepage'));
+                    }else{
+                        return $this->view->render($response, 'add.twig',['erreur'=>'Erreur lors de l\'ajout de la photo, merci de recommencer.']);
+
+                    }
+                }else{
+                    return $this->view->render($response, 'add.twig',['erreur'=>'Poids du fichier trop important.']);
+
+                }
+            }else{
+                return $this->view->render($response, 'add.twig',['erreur'=>'Format de fichier non pris en compte, utiliser un .jpg .png ou .gif.']);
+
+            }
+        }else{
+            return $this->view->render($response, 'add.twig',['erreur'=>'Erreur lors de l\'ajout de la photo, merci de recommencer.']);
+
+        }
 
     }
 }
