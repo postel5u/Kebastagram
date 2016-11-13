@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Comments;
 use App\Models\Follows;
+use App\Models\Pictures;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Arr;
@@ -598,12 +599,18 @@ final class UserController
     }
 
     function deletepic(Request $request, Response $response, $args){
-      \App\Models\Pictures::find($_GET['id'])->delete();
+        if (!isset($_SESSION['uniqid']))
+            return $response->withRedirect($this->router->pathFor('homepage'));
+        if (Pictures::find($_GET['id'])->id_user == $_SESSION['uniqid'])
+            \App\Models\Pictures::find($_GET['id'])->delete();
         return $response->withRedirect($this->router->pathFor('profil'));
     }
 
     function deletecom (Request $request, Response $response, $args){
-        Comments::find($_GET['id'])->delete();
+        if (!isset($_SESSION['uniqid']))
+            return $response->withRedirect($this->router->pathFor('homepage'));
+        if (Comments::find($_GET['id'])->id_user == $_SESSION['uniqid'])
+            Comments::find($_GET['id'])->delete();
         return $response->withRedirect($this->router->pathFor('homepage'));
 
     }
