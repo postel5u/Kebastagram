@@ -23,29 +23,41 @@ final class HomeController
         $this->model = $user;
     }
 
-    public function dispatch(Request $request, Response $response, $args)
-    {
-        $this->logger->info("Home page action dispatched");
-        $this->view->render($response, 'hello.twig');
-		
-        return $response;
-    }
-
     public function search(Request $request, Response $response, $args){
         if (isset($_SESSION['uniqid'])){
             $co = true;
+            $uniqid = $_SESSION['uniqid'];
         }else{
             $co = false;
         }
         if (isset($_GET['recherche']) && $_GET['recherche'] != ""){
-            $co = false;
-            if (isset($_SESSION['uniqid'])){
-                $co = true;
-            }
             $r = $_GET['recherche'];
             if (starts_with($r,"#")) {
                 $r = substr($r, 1);
                 $pic = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.tag like '%$r%' ORDER BY date DESC ");
+                foreach ($pic as $pics) {
+                    $d = abs(strtotime($pics->date) - time());
+                    if ($d < 60) {
+                        $pics->interval = "Il y a " . intval($d) . " secondes";
+                    } elseif ($d / 60 < 60) {
+                        $pics->interval = "Il y a " . intval($d / 60) . " minute(s)";
+                    } elseif ($d / 3600 < 24) {
+                        $pics->interval = "Il y a " . intval($d / 3600) . " heure(s)";
+                    } elseif (($d / 3600) / 24 < 30) {
+                        $pics->interval = "Il y a " . intval(($d / 3600) / 24) . " jour(s)";
+                    } elseif ((($d / 3600) / 24) / 30 < 12) {
+                        $pics->interval = "Il y a " . intval((($d / 3600) / 24) / 30) . " mois";
+                    } elseif ((($d / 3600) / 24) / 30 > 12) {
+                        $pics->interval = "Il y a plus de " . intval(((($d / 3600) / 24) / 30) / 12) . " année(s)";
+                    }
+                    if ($co) {
+                        if (sizeof(\Illuminate\Database\Capsule\Manager::select("select * from users_pictures where users_pictures.id_users='$uniqid' and users_pictures.id_pictures='$pics->id'")) == 1) {
+                            $pics->aime = true;
+                        } else {
+                            $pics->aime = false;
+                        }
+                    }
+                }
                 $this->view->render($response, 'search.twig',array('recherche'=>$r,'pics'=>$pic,'co'=>$co));
             }elseif (starts_with($r,"@")){
                 $r = substr($r, 1);
@@ -55,11 +67,34 @@ final class HomeController
             }else{
                 $pic = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.tag like '%$r%' ORDER BY date DESC ");
                 $u = User::where('username','LIKE',$r."%")->orWhere('firstname','LIKE',$r."%")->orWhere('lastname','LIKE',$r."%")->get();
+                foreach ($pic as $pics) {
+                    $d = abs(strtotime($pics->date) - time());
+                    if ($d < 60) {
+                        $pics->interval = "Il y a " . intval($d) . " secondes";
+                    } elseif ($d / 60 < 60) {
+                        $pics->interval = "Il y a " . intval($d / 60) . " minute(s)";
+                    } elseif ($d / 3600 < 24) {
+                        $pics->interval = "Il y a " . intval($d / 3600) . " heure(s)";
+                    } elseif (($d / 3600) / 24 < 30) {
+                        $pics->interval = "Il y a " . intval(($d / 3600) / 24) . " jour(s)";
+                    } elseif ((($d / 3600) / 24) / 30 < 12) {
+                        $pics->interval = "Il y a " . intval((($d / 3600) / 24) / 30) . " mois";
+                    } elseif ((($d / 3600) / 24) / 30 > 12) {
+                        $pics->interval = "Il y a plus de " . intval(((($d / 3600) / 24) / 30) / 12) . " année(s)";
+                    }
+                    if ($co) {
+                        if (sizeof(\Illuminate\Database\Capsule\Manager::select("select * from users_pictures where users_pictures.id_users='$uniqid' and users_pictures.id_pictures='$pics->id'")) == 1) {
+                            $pics->aime = true;
+                        } else {
+                            $pics->aime = false;
+                        }
+                    }
+                }
                 $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u,'pics'=>$pic,'co'=>$co));
 
             }
         }else{
-            $this->view->render($response, 'hello.twig');
+                return $response->withRedirect($this->router->pathFor('homepage'));
         }
     }
 

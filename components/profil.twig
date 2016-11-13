@@ -47,7 +47,8 @@
                             {%  else %}
                                 <i  id='{{ p.id }}' class="material-icons right like tooltipped" data-position="left" data-delay="50" data-tooltip="J'aime" style="cursor: pointer;margin-top: 10px">thumb_up</i>
                             {%  endif %}
-                            <a class="confirm" href="/deletepic?id={{p.id}}" ><i class="material-icons right" style="cursor: pointer;margin-top: 10px">delete</i></a>                            <p style="margin-top: 10px" class="left-align">{{ p.interval }}</p>
+                            <a class="confirm" href="/deletepic?id={{p.id}}" ><i class="material-icons right" style="cursor: pointer;margin-top: 10px">delete</i></a>
+                            <p style="margin-top: 10px" class="left-align">{{ p.interval }}</p>
 
                         </div>
                         <div class="card-reveal">

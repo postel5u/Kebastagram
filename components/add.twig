@@ -4,11 +4,10 @@
     </div>
 {% endif %}
 <div class="container " style="padding-top:5%;">
-        <form class="col s6 offset-l3"  method="post" enctype="multipart/form-data" >
+        <form class="col s6 offset-l3"  id="my_form" method="post" enctype="multipart/form-data" >
             <div class="input-field col s8">
-
-                <textarea required="" class="materialize-textarea" rows="3" id="contenu" name="content" placeholder="Description"></textarea>
-                <input required="" type="text" class="" id="titre" name="title" placeholder="Tags (séparé par des virgules)">
+                <input required=""  type="text" id="contenu" name="content" placeholder="Description">
+                <input required="" type="text"  id="titre" name="title" placeholder="Tags (séparé par des virgules sans espace !)">
             </div>
             <div class="col s6 " style="padding-top:5%;">
                 <div class="file-field input-field">
@@ -21,15 +20,52 @@
                     </div>
                 </div>
 
-                <div id="image_preview" style="text-align: center !important;">
+                <div id="image_preview" >
                     <div class="thumbnail hiddendiv">
-                        <img src="" alt="">
+                        <div class="container">
+                            <div class="row">
+                                        <div class="col s12 m6 l6 offset-l3 offset-m3">
+                                            <div class="card ">
+                                                <div class="card-image waves-effect waves-block waves-light">
+                                                    <img class="activator" src="">
+                                                </div>
+                                                <div class="card-content">
+                                                    <span class="card-title activator "><p  href="/profil/{{p.username }}">{{ p.firstname }} {{ p.lastname }}</p></span><i class=" right  activator material-icons" style="cursor: pointer">add</i>
+                                                    <p style="margin-top: -15px">@{{ p.username }}</p>
+                                                    <br>
+                                                    <p class="truncate activator " id="desc1" style="cursor: pointer !important;"></p>
+                                                    <p id="tag1">
+                                                    </p>
+                                                    <hr>
+                                                    <br>
+                                                    <p>3 j'aime(s)</p>
+                                                            <i  id='{{ p.id }}' class="material-icons right like tooltipped" data-position="left" data-delay="50" data-tooltip="J'aime" style="cursor: pointer;margin-top: 10px">thumb_up</i>
+
+                                                    <p style="margin-top: 10px" class="left-align">Il y a 3 jours</p>
+
+                                                </div>
+                                                <div class="card-reveal">
+                                                    <span class="card-title grey-text text-darken-4">{{ p.firstname }} {{ p.lastname }}<i class="material-icons right">close</i></span>
+                                                    <p style="margin-top: -10px">@{{ p.username }}</p>
+                                                    <p id="desc2"></p>
+                                                    <p id="tag2"></p>
+                                                    <hr>
+                                                        <textarea disabled="" id="textarea" placeholder="Ecrivez votre commentaires ici..."
+                                                                  class="materialize-textarea"></textarea>
+                                                        <button disabled=""  class="btn waves-effect waves-light  postCommentaire"><i
+                                                                    class="material-icons right">send</i>envoyer
+                                                        </button>
+                                                    <p style="display: block;padding-top: 5px;text-align: center;">Voir tout les commentaires... </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col s6" style="text-align: center !important;"><button id="button_closepreview" type="button" class="btn red hiddendiv"><i class="material-icons">repeat</i></button>
-
-
+            <div class="col s12" style="text-align: center !important;">
                 <button  name="action" value="send" type="submit" class="btn waves-effect waves-light " >Envoyer<i class="material-icons right">send</i></button></div>
         </form>
 </div>

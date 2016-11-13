@@ -10,13 +10,14 @@
 <script type="text/javascript" src="/JS/like.js"></script>
 <script type="text/javascript" src="/JS/commentaire.js"></script>
 
-<script> $('.datepicker').pickadate({
-selectMonths: true, // Creates a dropdown to control month
-selectYears: 90 // Creates a dropdown of 15 years to control year
-});
+<script>
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
+        $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 90
+        });
         $('.parallax').parallax();
         $(".button-collapse").sideNav();
         $('.modal-trigger').leanModal();
@@ -49,6 +50,85 @@ selectYears: 90 // Creates a dropdown of 15 years to control year
             $('#' + modal).openModal();
             $('#' + modal + '_YesBtn').click(function(){ $('#' + modal).closeModal(); document.location = but.href; });
         }
-    });</script>
+        $(function () {
+            $('#profil').on('submit', function (e) {
+                // On empêche le navigateur de soumettre le formulaire
+                e.preventDefault();
+
+                var $form = $(this);
+                var formdata = (window.FormData) ? new FormData($form[0]) : null;
+                var data = (formdata !== null) ? formdata : $form.serialize();
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: $form.attr('method'),
+                    contentType: false, // obligatoire pour de l'upload
+                    processData: false, // obligatoire pour de l'upload
+                    dataType: 'json', // selon le retour attendu
+                    data: data,
+                    complete: function (response) {
+                        $('body').html(response.responseText);
+                    }
+                });
+            });
+
+            $('#profil').find('input[name="image"]').on('change', function (e) {
+                var files = $(this)[0].files;
+
+                if (files.length > 0) {
+                    // On part du principe qu'il n'y qu'un seul fichier
+                    // étant donné que l'on a pas renseigné l'attribut "multiple"
+                    var file = files[0],
+                            $last_pic = $('#last_profile_pic');
+                    $new_pic = $('#new_profile_pic');
+
+                    // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
+                    $last_pic.addClass('hiddendiv');
+                    $new_pic.removeClass('hiddendiv');
+                    $new_pic.find('img').attr('src',window.URL.createObjectURL(file));
+                    $new_pic.find('img').attr('style', "max-width:200px;max-height:200px;");
+                }
+            });
+        });
+
+        // A chaque sélection de fichier
+        $('#my_form').find('input').on('change', function (e) {
+
+            var files = $(this)[0].files;
+
+            if (files.length > 0) {
+                // On part du principe qu'il n'y qu'un seul fichier
+                // étant donné que l'on a pas renseigné l'attribut "multiple"
+                var file = files[0],
+                        $image_preview = $('#image_preview');
+
+                // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
+                $image_preview.find('.thumbnail').removeClass('hiddendiv');
+
+
+                $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
+            }
+            if ($('#contenu').val() != ""){
+                $image_preview.find("#desc1").html($('#contenu').val());
+                $image_preview.find("#desc2").html($('#contenu').val());
+            }else {
+                $image_preview.find("#desc1").html('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer imperdiet faucibus turpis at blandit. Nulla in lobortis lacus. Suspendisse a commodo sem, eget convallis justo');
+                $image_preview.find("#desc1").html('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer imperdiet faucibus turpis at blandit. Nulla in lobortis lacus. Suspendisse a commodo sem, eget convallis justo');
+            }
+
+            if ($('#titre').val() != ""){
+                var tag =  $('#titre').val().replace(","," #");
+                tag = "#"+tag;
+                $image_preview.find("#tag1").html(tag);
+                $image_preview.find("#tag2").html(tag);
+            }else {
+                $image_preview.find("#desc1").html('#tag #tag');
+                $image_preview.find("#desc2").html('#tag #tag');
+
+            }
+        });
+
+    });
+</script>
 </body>
 </html>

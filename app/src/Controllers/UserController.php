@@ -134,16 +134,6 @@ final class UserController
         $this->router = $c->get('router');
     }
 
-    public function dispatch(Request $request, Response $response, $args)
-    {
-        $this->logger->info("Home page action dispatched");
-
-		$users = $this->model->show();
-
-		return $this->view->render($response, 'users.twig', ["data" => $users]);
-    }
-
-
     public function signup(Request $request, Response $response, $args, $errors=null){
 
         return $this->view->render($response,'signup.twig', array('errors' => $errors));
@@ -621,8 +611,8 @@ final class UserController
     function add(Request $request, Response $response, $args){
         if (!isset($_SESSION['uniqid']))
             return $response->withRedirect($this->router->pathFor('homepage'));
-
-        return $this->view->render($response, 'add.twig');
+        $u = User::find($_SESSION['uniqid']);
+        return $this->view->render($response, 'add.twig',['p'=>$u]);
 
     }
 
