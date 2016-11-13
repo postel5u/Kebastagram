@@ -23,15 +23,14 @@ Social network based on kébab for IT Licences, using Slim, Eloquent and Twig
 
 ###Install
 You can manually install by cloning this repo
-```
-$ git clone git@github.com:postel5u/Kebastagram.git
 
-```
+`$ git clone git@github.com:postel5u/Kebastagram.git`
+
 Configuration file located in folder `config`, edit the database.php file.
 
-Create and import Database
-- Create a new Database named kebabstagram,
-- Import main.sql in `BDD`, in your Database
+Create a new Database named kebabstagram ,
+
+Import kebastagram.sql in `BDD`, in your Database
 
 Run Server  `php -S localhost:8000 -t public` in the root of the project
 
