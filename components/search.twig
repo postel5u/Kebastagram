@@ -38,7 +38,7 @@
                                     <br>
                                     <p class="truncate activator" style="cursor: pointer !important;">{{ p.description }}</p>
                                     {%  set tags = p.tag|split(',') %}
-                                    <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
+                                    <p class="truncate">{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
                                     </p>
                                     <hr>
                                     <br>

@@ -12,8 +12,8 @@
                 </div>
                 <div class="row valign-wrapper">
                     <div class="col s12 m12">
-                        <div class="col s12 m4 l4 "><a{% if nb_follow >0 %} data-target="modal1" class="modal-trigger " {% endif %}href="" ><b><p class="center ">Abonnements</p></b></a><p class="center">{{ nb_follow}}</p></div>
-                        <div class="col s12 m4 l4 "><a{% if nb_follower >0 %} data-target="modal2" class="modal-trigger " {% endif %} href=""><b><p class="center">Abonnés</p></b></a><p class="center">{{ nb_follower}}</p></div>
+                        <div class="col s12 m4 l4 "><a  {% if nb_follow >0 %} data-target="modal1" class="modal-trigger blue-text" {% endif %}href="" ><b><p class="center ">Abonnements</p></b></a><p class="center">{{ nb_follow}}</p></div>
+                        <div class="col s12 m4 l4 "><a {% if nb_follower >0 %} data-target="modal2" class="modal-trigger blue-text" {% endif %} href=""><b><p class="center">Abonnés</p></b></a><p class="center">{{ nb_follower}}</p></div>
                         <div class="col s12 m4 l4 "><a href="#table_pics"><b><p class="center">Photos</p></b></a><p class="center">{{ nb_pics}}</p></div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             <br>
                             <p class="truncate activator" style="cursor: pointer !important;">{{ p.description }}</p>
                             {%  set tags = p.tag|split(',') %}
-                            <p>{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
+                            <p class="truncate">{% for t in tags %} <a href="search?recherche=%23{{ t }}">#{{ t }}</a>{% endfor %}
                             </p>
                             <hr>
                             <br>
