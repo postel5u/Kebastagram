@@ -34,10 +34,11 @@ $mw = function ($request, $response, $next) {
         $id = $_SESSION['uniqid'];
         $u = User::where('uniqid',$id)->get()->first();
         $f = \App\Models\Follows::where('id_user_follow',$id)->get();
-        $p = array();
+        $p =array();
         $user_follow = array();
         foreach ($f as $follow){
-            $p = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$follow->id_user' ORDER BY date DESC ");
+            $pic = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$follow->id_user' ORDER BY date DESC ");
+            $p = array_merge($p,$pic);
         }
         foreach ($p as $pics){
             $d = abs(strtotime($pics->date)-time());

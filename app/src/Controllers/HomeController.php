@@ -38,20 +38,24 @@ final class HomeController
             $co = false;
         }
         if (isset($_GET['recherche']) && $_GET['recherche'] != ""){
+            $co = false;
+            if (isset($_SESSION['uniqid'])){
+                $co = true;
+            }
             $r = $_GET['recherche'];
             if (starts_with($r,"#")) {
                 $r = substr($r, 1);
-                $p = Pictures::where('tag','LIKE',"%".$r."%")->get();
-                $this->view->render($response, 'search.twig',array('recherche'=>$r,'pics'=>$p));
+                $pic = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.tag like '%$r%' ORDER BY date DESC ");
+                $this->view->render($response, 'search.twig',array('recherche'=>$r,'pics'=>$pic,'co'=>$co));
             }elseif (starts_with($r,"@")){
                 $r = substr($r, 1);
                 $u = User::where('username','LIKE',$r."%")->orWhere('firstname','LIKE',$r."%")->orWhere('lastname','LIKE',$r."%")->get();
-                $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u));
+                $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u,'co'=>$co));
 
             }else{
-                $p = Pictures::where('tag','LIKE',"%".$r."%")->get();
+                $pic = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.tag like '%$r%' ORDER BY date DESC ");
                 $u = User::where('username','LIKE',$r."%")->orWhere('firstname','LIKE',$r."%")->orWhere('lastname','LIKE',$r."%")->get();
-                $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u,'pics'=>$p));
+                $this->view->render($response, 'search.twig',array('recherche'=>$r,'users'=>$u,'pics'=>$pic,'co'=>$co));
 
             }
         }else{
@@ -60,6 +64,11 @@ final class HomeController
     }
 
     public function comments(Request $request, Response $response, $args){
+        if (!isset($_SESSION['uniqid'])){
+            $uniqid ="";
+        }else{
+            $uniqid = $_SESSION['uniqid'];
+        }
         $id = $args['id'];
         $c = Manager::select("select * from users, comments where users.uniqid = comments.id_user and comments.id_picture='$id'");
         foreach ($c as $com){
@@ -67,7 +76,7 @@ final class HomeController
             $com->date = "$date[2]/$date[1]/$date[0]";
 
         }
-        $this->view->render($response, 'comments.twig', array('comments' => $c,'user'=>$_SESSION['uniqid']));
+        $this->view->render($response, 'comments.twig', array('comments' => $c,'user'=>$uniqid));
     }
 
     public function likes(Request $request, Response $response, $args){

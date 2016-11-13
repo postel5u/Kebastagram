@@ -587,7 +587,7 @@ final class UserController
     function follow(Request $request, Response $response, $args) {
         $u = $_SESSION['uniqid'];
         $user_follow = $args['uniqid'];
-        $username = User::find($user_follow)->username;
+        $username = User::where('uniqid',$user_follow)->first()->username;
         $f = new Follows();
         $f->id_user = $user_follow;
         $f->id_user_follow = $u ;
@@ -600,7 +600,7 @@ final class UserController
     function unfollow(Request $request, Response $response, $args) {
         $u = $_SESSION['uniqid'];
         $user_follow = $args['uniqid'];
-        $username = User::find($user_follow)->username;
+        $username = User::where('uniqid',$user_follow)->first()->username;
         Follows::where('id_user',$user_follow)->where('id_user_follow',$_SESSION['uniqid'])->delete();
         $url = $this->router->pathFor('profil_username',['username'=>$username]);
         return $response->withStatus(302)->withHeader('Location', $url);
