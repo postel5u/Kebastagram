@@ -23,7 +23,7 @@ $ git clone git@github.com:postel5u/Kebastagram.git
 Configuration file located in ```config```, edit the database.php, setting.php
 
 #####3 Create and import Database
-Simply create a new Database
+Simply create a new Database,
 Import main.sql in ```BDD```, in your Database
 
 #####4 Run Server  ```php -S localhost:8000 -t public```
