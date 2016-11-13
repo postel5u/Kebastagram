@@ -5,11 +5,13 @@
         <div class="container">
             <div class="col s12 m10  l6 offset-l3">
                 <div class="card-panel grey lighten-5 z-depth-1">
-                    {% if bool_follow %}
-                        <a href="/unfollow/{{ uniqid }}" class="waves-effect waves-blue btn blue right ">Ne plus suivre</a>
+                    {% if co %}
+                        {% if bool_follow %}
+                            <a href="/unfollow/{{ uniqid }}" class="waves-effect waves-blue btn blue right hide-on-small-and-down">Ne plus suivre</a>
 
-                    {% else %}
-                        <a class="waves-effect waves-blue btn blue right btn_follow" href="/follow/{{uniqid}}">Suivre</a>
+                        {% else %}
+                            <a class="waves-effect waves-blue btn blue right btn_follow hide-on-small-and-down" href="/follow/{{uniqid}}">Suivre</a>
+                        {% endif %}
                     {% endif %}
                     <div class="row valign-wrapper">
                         <div class="col s4 m2">
@@ -19,9 +21,17 @@
                             <span class="black-text"><h5>@{{ username }}</h5><p>{{ firstname }} {{ lastname }}</p></span>
                         </div>
                     </div>
+                    {% if co %}
+                        {% if bool_follow %}
+                            <a href="/unfollow/{{ uniqid }}" style="width: 100%;" class="waves-effect waves-blue btn blue center show-on-small-and-down hide-on-med-and-up">Ne plus suivre</a>
+
+                        {% else %}
+                            <a style="width: 100%;" class="waves-effect waves-blue btn blue center btn_follow show-on-small-and-down hide-on-med-and-up" href="/follow/{{uniqid}}">Suivre</a>
+                        {% endif %}
+                    {% endif %}
                     <div class="row valign-wrapper">
                         <div class="col s12 m12">
-                            <div class="col s12 m4 l4 "><a{% if nb_follow >0 %} data-target="modal1" class="modal-trigger" {% endif %}href=""><b><p class="center ">Abonnements</p></b></a><p class="center">{{ nb_follow}}</p></div>
+                            <div class="col s12 m4 l4 "><a{% if nb_follow >0 %} data-target="modal1" class="modal-trigger " {% endif %} href=""><b><p class="center ">Abonnements</p></b></a><p class="center">{{ nb_follow}}</p></div>
                             <div class="col s12 m4 l4 "><a{% if nb_follower >0 %} data-target="modal2" class="modal-trigger" {% endif %}href=""><b><p class="center">Abonnés</p></b></a><p class="center">{{ nb_follower}}</p></div>
                             <div class="col s12 m4 l4 "><a href="#table_pics"><b><p class="center">Photos</p></b></a><p class="center">{{ nb_pics}}</p></div>
                         </div>

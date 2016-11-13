@@ -329,69 +329,78 @@ final class UserController
     }
 
     public function profil_username(Request $request, Response $response, $args){
+        if (isset($_SESSION['uniqid'])){
+            $co = true;
+        }else{
+            $co = false;
+        }
         $u = User::where('username',$args["username"])->get();
 
         if ($u->isEmpty()){
-            $this->view->render($response, 'profil_username.twig', array('username' => $args['username'],'erreur'=>true));
+            return $this->view->render($response, 'profil_username.twig', array('username' => $args['username'],'erreur'=>true));
 
         }else {
             $u = $u->first();
-            if ($u->uniqid == $_SESSION['uniqid']) {
-                return $response->withRedirect($this->router->pathFor('profil'));
+            if ($co) {
+                if ($u->uniqid == $_SESSION['uniqid']) {
+                    return $response->withRedirect($this->router->pathFor('profil'));
 
-            } else {
-                $pics = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$u->uniqid' ORDER BY date DESC ");
-                $nb_follower = Follows::where('id_user',$u->uniqid)->count();
-                $nb_follow = Follows::where('id_user_follow',$u->uniqid)->count();
-                $nb_pics = 0;
-                $follow = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user and follows.id_user_follow='$u->uniqid'");
-                $follower = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user_follow and follows.id_user='$u->uniqid'");
+                }
+            }
+            $pics = \Illuminate\Database\Capsule\Manager::select("select * from users, pictures where users.uniqid=pictures.user and pictures.user='$u->uniqid' ORDER BY date DESC ");
+            $nb_follower = Follows::where('id_user',$u->uniqid)->count();
+            $nb_follow = Follows::where('id_user_follow',$u->uniqid)->count();
+            $nb_pics = 0;
+            $follow = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user and follows.id_user_follow='$u->uniqid'");
+            $follower = \Illuminate\Database\Capsule\Manager::select("select * from users, follows where users.uniqid=follows.id_user_follow and follows.id_user='$u->uniqid'");
+            $bool_follow = false;
+
+            if($co){
                 if (Follows::where('id_user',$u->uniqid)->where('id_user_follow',$_SESSION['uniqid'])->count() > 0){
                     $bool_follow = true;
                 }else{
                     $bool_follow = false;
 
                 }
-                foreach ($pics as $pic){
-                    $nb_pics++;
-                    $d = abs(strtotime($pic->date)-time());
-                    if($d < 60){
-                        $pic->interval= "Il y a ".intval($d)." secondes";
-                    }
-                    elseif ($d/60 < 60) {
-                        $pic->interval= "Il y a ".intval($d/60)." minute(s)";
-                    }
-                    elseif ($d/3600 < 24) {
-                        $pic->interval= "Il y a ".intval($d/3600)." heure(s)";
-                    }
-                    elseif (($d/3600)/24 < 30){
-                        $pic->interval= "Il y a ".intval(($d/3600)/24)." jour(s)";
-                    }
-                    elseif ((($d/3600)/24)/30 < 12){
-                        $pic->interval= "Il y a ".intval((($d/3600)/24)/30) ." mois";
-                    }
-                    elseif ((($d/3600)/24)/30 > 12) {
-                        $pic->interval= "Il y a plus de ".intval(((($d/3600)/24)/30)/12) ." année(s)";
-                    }
-                }
-                $val = ['uniqid'=>$u->uniqid,
-                    'username'=>$u->username,
-                    'lastname' => $u->lastname,
-                    'firstname'=> $u->firstname,
-                    "profil_picture"=>$u->profil_picture,
-                    'pictures'=>$pics,
-                    'nb_follow'=>$nb_follow,
-                    'nb_follower'=>$nb_follower,
-                    'nb_pics'=>$nb_pics,
-                    'follow'=>$follow,
-                    'follower'=>$follower,
-                    'erreur'=>false,
-                    'bool_follow'=>$bool_follow
-                ];
-                return $this->view->render($response,'profil_username.twig', $val);
-
-
             }
+            foreach ($pics as $pic){
+                $nb_pics++;
+                $d = abs(strtotime($pic->date)-time());
+                if($d < 60){
+                    $pic->interval= "Il y a ".intval($d)." secondes";
+                }
+                elseif ($d/60 < 60) {
+                    $pic->interval= "Il y a ".intval($d/60)." minute(s)";
+                }
+                elseif ($d/3600 < 24) {
+                    $pic->interval= "Il y a ".intval($d/3600)." heure(s)";
+                }
+                elseif (($d/3600)/24 < 30){
+                    $pic->interval= "Il y a ".intval(($d/3600)/24)." jour(s)";
+                }
+                elseif ((($d/3600)/24)/30 < 12){
+                    $pic->interval= "Il y a ".intval((($d/3600)/24)/30) ." mois";
+                }
+                elseif ((($d/3600)/24)/30 > 12) {
+                    $pic->interval= "Il y a plus de ".intval(((($d/3600)/24)/30)/12) ." année(s)";
+                }
+            }
+            $val = ['uniqid'=>$u->uniqid,
+                'username'=>$u->username,
+                'lastname' => $u->lastname,
+                'firstname'=> $u->firstname,
+                "profil_picture"=>$u->profil_picture,
+                'pictures'=>$pics,
+                'nb_follow'=>$nb_follow,
+                'nb_follower'=>$nb_follower,
+                'nb_pics'=>$nb_pics,
+                'follow'=>$follow,
+                'follower'=>$follower,
+                'erreur'=>false,
+                'bool_follow'=>$bool_follow,
+                'co'=>$co
+            ];
+            return $this->view->render($response,'profil_username.twig', $val);
         }
 
     }

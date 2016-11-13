@@ -13,18 +13,13 @@
 namespace App\Controllers;
 
 
-use App\Models\Follows;
-use App\Models\User;
-use App\Models\Pictures;
-use Illuminate\Contracts\Redis\Database;
-use Illuminate\Database\Capsule\Manager;
-use Illuminate\Database\DatabaseManager;
-use Illuminate\Database\Query\Builder;
-use Psr\Log\LoggerInterface;
+
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use  PDO;
 use App\Models\Comments;
+use Illuminate\Database\Capsule\Manager;
+
 
 
 final class AjaxController {
@@ -47,19 +42,16 @@ final class AjaxController {
 
     public function like(Request $request, Response $response, $args){
 
-        try{
-            $this->dbh = new PDO("mysql:dbname=kebabstagram; host=localhost","root","root",array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
-        }catch(\Exception $e){
-            die('Erreur : ' . $e->getMessage());
-        }
         $p = \App\Models\Pictures::find($_POST['id']);
 
         $p->nbLike++;
+        $p->save();
 
         $u = \App\Models\User::find($_SESSION['uniqid']);
-        $req = "insert into users_pictures (id_users,id_pictures) values ('$u->uniqid','$p->id')";
-        $this->dbh->query($req);
-        $p->save();
+        Manager::table('users_pictures')->insert(
+            ['id_users' => $u->uniqid, 'id_pictures' => $p->id]
+        );
+
 
 
         echo json_encode('');
@@ -67,19 +59,14 @@ final class AjaxController {
 
     public function unlike(Request $request, Response $response, $args){
 
-        try{
-            $this->dbh = new PDO("mysql:dbname=kebabstagram; host=localhost","root","root",array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
-        }catch(\Exception $e){
-            die('Erreur : ' . $e->getMessage());
-        }
+
         $p = \App\Models\Pictures::find($_POST['id']);
 
         $p->nbLike--;
 
         $u = \App\Models\User::find($_SESSION['uniqid']);
-        $req = "delete from users_pictures where id_users='$u->uniqid' and id_pictures='$p->id'";
-        $this->dbh->query($req);
         $p->save();
+        Manager::table('users_pictures')->where('id_users', $u->uniqid)->where('id_pictures', $p->id)->delete();
 
 
         echo json_encode('');

@@ -32,6 +32,11 @@ final class HomeController
     }
 
     public function search(Request $request, Response $response, $args){
+        if (isset($_SESSION['uniqid'])){
+            $co = true;
+        }else{
+            $co = false;
+        }
         if (isset($_GET['recherche']) && $_GET['recherche'] != ""){
             $r = $_GET['recherche'];
             if (starts_with($r,"#")) {
