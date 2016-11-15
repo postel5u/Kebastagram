@@ -599,9 +599,10 @@ final class UserController
     }
 
     function deletepic(Request $request, Response $response, $args){
-        if (!isset($_SESSION['uniqid']))
+        if (!isset($_SESSION['uniqid'])) {
             return $response->withRedirect($this->router->pathFor('homepage'));
-        if (Pictures::find($_GET['id'])->id_user == $_SESSION['uniqid'])
+        }
+        if (Pictures::find($_GET['id'])->user == $_SESSION['uniqid'])
             \App\Models\Pictures::find($_GET['id'])->delete();
         return $response->withRedirect($this->router->pathFor('profil'));
     }
