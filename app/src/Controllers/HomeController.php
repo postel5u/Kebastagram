@@ -16,11 +16,12 @@ final class HomeController
     private $logger;
 	private $user;
 
-    public function __construct($view, LoggerInterface $logger, $user)
+    public function __construct($c)
     {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->model = $user;
+        $this->view = $c->get('view');
+        $this->logger = $c->get('logger');
+        $this->model = $c->get('App\Repositories\UserRepository');
+        $this->router = $c->get('router');
     }
 
     public function search(Request $request, Response $response, $args){
@@ -94,8 +95,9 @@ final class HomeController
 
             }
         }else{
-                return $response->withRedirect($this->router->pathFor('homepage'));
+            return $response->withRedirect($this->router->pathFor('homepage'));
         }
+
     }
 
     public function comments(Request $request, Response $response, $args){

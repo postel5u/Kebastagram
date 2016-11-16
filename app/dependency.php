@@ -78,9 +78,7 @@ $container['activation'] = function ($c) {
 
 $container['App\Controllers\HomeController'] = function ($c) {
     return new App\Controllers\HomeController(
-		$c->get('view'), 
-		$c->get('logger'),
-		$c->get('App\Repositories\HomeRepository')
+		$c
     );
 };
 

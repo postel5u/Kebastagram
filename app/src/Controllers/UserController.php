@@ -612,8 +612,14 @@ final class UserController
             return $response->withRedirect($this->router->pathFor('homepage'));
         if (Comments::find($_GET['id'])->id_user == $_SESSION['uniqid'])
             Comments::find($_GET['id'])->delete();
-        return $response->withRedirect($this->router->pathFor('homepage'));
+        if(isset($_SESSION['route'])){
+            $url = $_SESSION['route'];
+            unset($_SESSION['route']);
+            return $response->withStatus(302)->withHeader('Location', $url);
+        }else{
+            return $response->withRedirect($this->router->pathFor('homepage'));
 
+        }
     }
 
     function add(Request $request, Response $response, $args){

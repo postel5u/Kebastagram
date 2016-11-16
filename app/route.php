@@ -5,7 +5,7 @@
 */
 
 
-$app->get('/', 'App\Controllers\HomeController:dispatch')->setName('homepage')->add($mw);
+$app->get('/', 'App\Controllers\HomeController:dispatch')->setName('homepage')->add($mw)->add($mw_route);
 
 $app->get('/login', 'App\Controllers\UserController:loginPage')->setName('login');
 
@@ -15,13 +15,13 @@ $app->get('/logout', 'App\Controllers\UserController:logout')->setName('logout')
 
 $app->get('/signup', 'App\Controllers\UserController:signup')->setName('signup');
 
-$app->get('/search', 'App\Controllers\HomeController:search')->setName('search');
+$app->get('/search', 'App\Controllers\HomeController:search')->setName('search')->add($mw_route);
 
 $app->post('/signup', 'App\Controllers\UserController:addMember');
 
 $app->get('/about', 'App\Controllers\HomeController:about')->setName('about');
 
-$app->get('/profil', 'App\Controllers\UserController:profil')->setName('profil');
+$app->get('/profil', 'App\Controllers\UserController:profil')->setName('profil')->add($mw_route);
 $app->get('/editprofil', 'App\Controllers\UserController:editProfil')->setName('editprofil');
 $app->post('/acceptEdit', 'App\Controllers\UserController:acceptEdit')->setName('acceptEdit');
 
@@ -33,7 +33,7 @@ $app->get('/show/comments/{id}', 'App\Controllers\HomeController:comments');
 $app->get('/show/likes/{id}', 'App\Controllers\HomeController:likes');
 
 
-$app->get('/profil/{username}','App\Controllers\UserController:profil_username')->setName('profil_username');
+$app->get('/profil/{username}','App\Controllers\UserController:profil_username')->setName('profil_username')->add($mw_route);
 
 $app->get('/follow/{uniqid}', 'App\Controllers\UserController:follow');
 $app->get('/unfollow/{uniqid}','App\Controllers\UserController:unfollow');

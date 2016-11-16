@@ -73,3 +73,10 @@ $mw = function ($request, $response, $next) {
 
     return $response;
 };
+
+$mw_route =function ($request, $response, $next) {
+    $_SESSION['route'] = $request->getUri();
+    $response = $next($request, $response);
+    return $response;
+
+};
